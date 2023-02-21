@@ -1,0 +1,15 @@
+package com.nmBoard.test.service;
+
+import java.util.List;
+
+import com.nmBoard.test.vo.Board;
+
+public interface BoardService {
+
+	   void insert(Board board);
+	   
+	   List<Board> list();
+
+	   Board get(int no);
+
+}

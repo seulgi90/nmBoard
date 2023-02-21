@@ -1,0 +1,36 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NM 게시판 </title>
+  
+  <style>
+  table, th, td {
+  border: 1px solid;
+  }
+  </style>
+  
+</head>	
+
+<a href='form'>글쓰기</a>
+
+ <table>
+    <tr>
+      <th>번호</th>
+      <th>제목</th>
+	    <th>내용</th>
+	    <th>작성자</th>
+    </tr>
+    
+    <tr th:each="board : ${boardList}">
+      <td th:text="${board.no}">번호</td>
+	    <td th:text="${board.title}">제목</td>
+	    <td><a th:href="@{/main/detail(no=${board.no})}" th:text="${board.title}"></a></td>
+	    <td th:text="${board.content}">내용</td>
+	    <td th:text="${board.writer}">작성자</td>
+  </tr>
+ </table>
+ 
+<body>
+</html>
