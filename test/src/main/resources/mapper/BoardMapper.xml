@@ -30,5 +30,22 @@
   	where
   	 no=#{no}
   </select>
+  
+  <update id="update">
+   update 
+   	 board 
+   set
+   	title =#{title},
+    content =#{content}
+   where
+    no =#{no}
+  </update>
+  
+  <delete id="delete">
+  delete from
+   board
+  where
+   no=#{no}
+  </delete>
 
 </mapper>

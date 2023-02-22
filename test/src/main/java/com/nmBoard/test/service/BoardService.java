@@ -6,10 +6,14 @@ import com.nmBoard.test.vo.Board;
 
 public interface BoardService {
 
-	   void insert(Board board);
+	   int insert(Board board);
 	   
 	   List<Board> list();
 
 	   Board get(int no);
+
+	   int update(Board board);
+
+	   int delete(int no);
 
 }

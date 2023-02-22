@@ -14,4 +14,8 @@ public interface BoardDao {
 	List<Board> findAll();
 	
 	Board findByNo(int no);
+
+	int update(Board board);
+
+	int delete(int no);
 }

@@ -15,7 +15,7 @@
 
 <body>
 
-<form>
+<form id="detail">
 	<table>
    		<tr>
 		 <th>번호</th>
@@ -37,12 +37,60 @@
    
 	</table>
 	
-		
-      <a href='list'>목록</a>
+		<button type="button" onclick="update(this.form)">수정</button>
+		<button type="button" th:onclick="'remove(' + ${boardD.no} + ');'">삭제</button>
+      	<a href='list'>목록</a>
       
 	</form>
 	
-	
 
 </body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script>
+function update(form) {
+	var form1 = $("#detail").serialize();
+	var result = confirm('글을 수정 하시겠습니까?');
+	
+	if (result == true) {
+		
+		$.ajax({
+			url : "update",
+			type : "POST",
+			data : form1,
+			dataType : "text",
+			success : function(data) {
+				alert('글 수정 성공');
+				window.location.href = "/detail?no" + no;
+			}
+		}); // ajax
+		
+	} else {
+		alert('글 수정 취소');
+	}	
+}
+
+function remove(no) {
+	
+	var form2 = $("#detail").serialize();
+	var result = confirm('글을 삭제 하시겠습니까?');
+	 
+	 if (result == true) {
+		 
+		    $.ajax({
+		        url: "delete",
+		        type: "POST",
+		        data: form2,
+		  	    success : function(data) {
+		  		alert('글 삭제 성공');
+		  			window.location.href = "/main/list";
+		  			}
+		  		}); // ajax 
+	 } else {
+		 alert('글 삭제 취소');
+		 window.location.href = "/main/detail?no=" + no;
+	 }
+ }
+</script>
 </html>
