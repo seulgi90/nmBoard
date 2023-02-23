@@ -3,7 +3,6 @@ package com.nmBoard.test.vo;
 public class Board {
 
 	private int no;
-	private String writer;
 	private String title;
 	private String content;
 	
@@ -18,19 +17,6 @@ public class Board {
 	public void setNo(int no) {
 		this.no = no;
 	}
-
-
-
-	public String getWriter() {
-		return writer;
-	}
-
-
-
-	public void setWriter(String writer) {
-		this.writer = writer;
-	}
-
 
 
 	public String getTitle() {
@@ -59,7 +45,7 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [no=" + no + ", writer=" + writer + ", title=" + title + ", content=" + content + "]";
+		return "Board [no=" + no + ", title=" + title + ", content=" + content + "]";
 	}
 	
 	

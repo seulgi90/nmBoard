@@ -15,14 +15,14 @@ import com.nmBoard.test.vo.Board;
 
 @Controller
 @RequestMapping("/main")
-public class HomeController {
+public class BoardController {
 	
 	@Autowired
 	BoardService boardService;
 	
 	@GetMapping("/form")
 	public String form() {
-		return "form";
+		return "board/form";
 	}
 	
 	@GetMapping("/add")
@@ -38,7 +38,7 @@ public class HomeController {
 	
 		model.addAttribute("boardList", boardService.list());
 		
-		return "list";
+		return "board/list";
 	}
 	
 	@GetMapping("/detail")
@@ -46,7 +46,7 @@ public class HomeController {
 		
 		Board board = boardService.get(no);
 		
-		return new ModelAndView("detail", "boardD", board);
+		return new ModelAndView("board/detail", "boardD", board);
 	}
 
 	@PostMapping("/update")

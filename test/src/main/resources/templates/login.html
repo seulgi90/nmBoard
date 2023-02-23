@@ -10,13 +10,14 @@
 <body>
 
 	<h1>메인 로그인<h1>
-    <form action='login' method="post">
+    <form action="login" method="post">
 
     <table border='1'>
       <tr>
         <th>ID(이메일)</th>
         <td>
-          <input name='id' type='email' size='30' th:value="${email}"></td>
+<!--           <input name='id' type='id' size='30' th:value="${id}"></td> -->
+          <input name='id' type='text' size='30' ></td>
       </tr>
       <tr>
         <th>Password</th><td><input name='password' type='password' size='20'></td>
@@ -24,7 +25,6 @@
     </table>
     <p>
       <button type='submit'>로그인</button>
-<!--       <a href='../'>취소</a> -->
     </p>
     </form>
 

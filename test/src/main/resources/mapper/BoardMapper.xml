@@ -5,16 +5,15 @@
 <mapper namespace="com.nmBoard.test.dao.BoardDao">
 
   <insert id="insert">
-	 insert into board(title, content, writer)
-	 values (#{title}, #{content}, #{writer})
+	 insert into board(title, content)
+	 values (#{title}, #{content})
   </insert>
   
   <select id="findAll" resultType="board">
   	select 
   	 no,
   	 title,
-  	 content,
-  	 writer
+  	 content
   	from
   	 board
   </select>
@@ -23,8 +22,7 @@
   	select 
   	 no,
   	 title,
-  	 content,
-  	 writer
+  	 content
   	from
   	 board
   	where
