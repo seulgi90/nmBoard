@@ -33,8 +33,8 @@ public class SecurityService implements UserDetailsService {
 		if(userAuthes.size() == 0) {
 			throw new UsernameNotFoundException("User "+id+" Not Found!");
 		}
-		
-		return new UserPrincipal(userAuthes); //UserDetails 클래스를 상속받은 UserPrincipal 리턴한다.
+		//UserDetails 클래스를 상속받은 UserPrincipal 리턴
+		return new UserPrincipal(userAuthes);
 	}
     
     // 회원 저장
@@ -50,7 +50,6 @@ public class SecurityService implements UserDetailsService {
 			int roleNo = userDao.findRoleNo(user.getRoleName());
 
 			userDao.userRoleSave(userNo, roleNo);
-
 			return "success";
 		}	 	
 		return "fail";

@@ -19,7 +19,7 @@ public class LoginController {
 		
 		model.addAttribute("name",userPrincipal.getUsername());
 		model.addAttribute("auth",userPrincipal.getAuthorities());
-		
+				
 		return "login";
 	}
 	

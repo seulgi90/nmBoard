@@ -27,11 +27,9 @@
       <td th:text="${board.no}">번호</td>
 	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
-	    <td><input class="form-control" name="writer" value='<sec:authentication property="principal.username"/>' readonly="readonly"></td>
+	    <td>작성자 불러오기</td>
   </tr>
  </table>
-	  <!--  csrf 공격 방어를 위해 동적 생성 -->
-	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }" />
 	  
 		 <br><button sec:authorize="isAuthenticated()" type="button" onclick="location.href='/login'">로그아웃</button>
  
