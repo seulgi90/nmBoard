@@ -34,7 +34,7 @@ public class SecurityService implements UserDetailsService {
 			throw new UsernameNotFoundException("User "+id+" Not Found!");
 		}
 		
-		return new UserPrincipal(userAuthes); //UserDetails 클래스를 상속받은 UserPrincipalVO 리턴한다.
+		return new UserPrincipal(userAuthes); //UserDetails 클래스를 상속받은 UserPrincipal 리턴한다.
 	}
     
     // 회원 저장

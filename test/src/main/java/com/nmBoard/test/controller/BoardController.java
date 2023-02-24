@@ -14,7 +14,7 @@ import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.Board;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/board")
 public class BoardController {
 	
 	@Autowired
