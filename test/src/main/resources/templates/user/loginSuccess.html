@@ -10,7 +10,10 @@
 <body>
 
 	<h1>로그인 인증 성공<h1>
-    <h5><a th:href="@{/board/list}">게시판으로 이동</a></h5>
+	 <p>
+        <span sec:authentication="name"></span>님 환영합니다~
+    </p>
+    <h5><a th:href="@{/board/list}">Board 게시판으로 이동</a></h5>
 
 </body>
 </html>

@@ -11,6 +11,12 @@ import com.nmBoard.test.vo.UserPrincipal;
 @Controller
 public class LoginController {
 	
+	// 메인 페이지
+    @GetMapping("/main")
+    public String index() {
+        return "index";
+    }
+	
 	@GetMapping("/login")
 	public String loadExceptionPage(ModelMap model) throws Exception{
 		
@@ -22,18 +28,15 @@ public class LoginController {
 				
 		return "login";
 	}
+
 	
-	// 접근 금지 페이지
-//	@GetMapping("/access-denied")
-//	public String loadAccessdeniedPage() throws Exception{
-//		return "index";
-//	}
-	
-	@GetMapping("/loginSuccess")
+	@GetMapping("/user/loginSuccess")
 	public void loginSuccess() {
 	}
 	
-	@GetMapping("/loginFail")
-	public void loginFail() {
-	}
+	  // 로그아웃 결과 페이지
+    @GetMapping("/logout")
+    public String logout() {
+        return "/logout";
+    }
 }

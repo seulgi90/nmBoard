@@ -1,17 +1,18 @@
 package com.nmBoard.test.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.Board;
+import com.nmBoard.test.vo.User;
 
 @Controller
 @RequestMapping("/board")
@@ -22,14 +23,15 @@ public class BoardController {
 	
 	@GetMapping("/form")
 	public String form() {
+		
 		return "board/form";
 	}
 	
 	@GetMapping("/add")
-	public String insert(Board board) {
+	public String insert(@AuthenticationPrincipal User user, Board board) {
 		
 		boardService.insert(board);
-		
+		System.out.println("userNo = " + user.getUserNo());
 		return "redirect:list";
 	}
 	
@@ -37,7 +39,7 @@ public class BoardController {
 	public String list(Model model) {
 	
 		model.addAttribute("boardList", boardService.list());
-		System.out.println("list che -->"+ model);
+		
 		return "board/list";
 	}
 	

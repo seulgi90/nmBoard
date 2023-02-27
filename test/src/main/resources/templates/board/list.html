@@ -14,6 +14,7 @@
 </head>	
 
 <a href='form'>글쓰기</a>
+<a th:href="@{/main}">메인 이동</a>
 
  <table>
     <tr>
@@ -27,11 +28,10 @@
       <td th:text="${board.no}">번호</td>
 	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
-	    <td th:text="${board.writer.name}"></td>
+	    <td th:text="${board.writer.name}">작성자</td>
   </tr>
  </table>
 	  
-		 <br><button sec:authorize="isAuthenticated()" type="button" onclick="location.href='/login'">로그아웃</button>
  
 <body>
 </html>

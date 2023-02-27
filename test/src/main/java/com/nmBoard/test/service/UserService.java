@@ -16,7 +16,7 @@ import com.nmBoard.test.vo.User;
 import com.nmBoard.test.vo.UserPrincipal;
 
 @Service
-public class SecurityService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private UserDao userDao;
@@ -39,7 +39,7 @@ public class SecurityService implements UserDetailsService {
     
     // 회원 저장
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public String InsertUser(User user) {
+	public String JoinUser(User user) {
 		
     	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		

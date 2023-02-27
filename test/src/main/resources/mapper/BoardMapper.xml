@@ -10,7 +10,6 @@
 	 <id column="no" property="no"/>
      <result column="title" property="title"/>
      <result column="content" property="content"/>
-     <result column="user_no" property="userNo"/>
 	
 	  <association property="writer" javaType="User">
 	      <id column="user_no" property="userNo"/>
@@ -21,9 +20,10 @@
 	    
 	 </resultMap>
 
-  <insert id="insert">
-	 insert into board(title, content)
-	 values (#{title}, #{content})
+ <insert id="insert" parameterType="board"
+      useGeneratedKeys="true" keyColumn="no" keyProperty="no">
+	 insert into board(title, content, user_no)
+	 values (#{title}, #{content}, #{writer.userNo})
   </insert>
   
   <select id="findAll" resultMap="boardMap">
@@ -31,10 +31,11 @@
   	 b.no,
   	 b.title,
   	 b.content,
+  	 u.user_no,
   	 u.name
   	from
   	 board b 
-  	 join user u on b.user_no = u.user_no
+  	join user u on b.user_no = u.user_no
   	
   </select>
   
