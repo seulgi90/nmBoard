@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
 	
-	//UID값을 명시 해주지 않으면 자바 컴파일러가 임시적인 값을 부여한다.
-		private static final long serialVersionUID = 1L;
+	// UID값을 명시 해주지 않으면 자바 컴파일러가 임시적인 값을 부여한다.
+	private static final long serialVersionUID = 1L;
 
 	private ArrayList<User> user;
 	

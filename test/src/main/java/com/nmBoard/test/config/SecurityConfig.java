@@ -54,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			    	
 		    .and()
             		.formLogin() // Form 기반의 로그인인 경우
- //           		.loginPage("/login")
 		            .defaultSuccessUrl("/loginSuccess") //로그인 성공 후 이동 페이지
 		            .failureUrl("/loginFail")// 로그인 실패 후 이동 페이지
 //		            .loginProcessingUrl("/login")//로그인을 처리할 url을 설정한다. default값은 "/login" 이다. <form> 태그의 action속성과 맞추어준다.
@@ -74,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		    	
 //			 .and()
 //					.exceptionHandling()
-//					.accessDeniedPage("/access-denied");
+//					.accessDeniedPage("/access-denied"); // 접근 금지 페이지
     
        
 //    	http.csrf().disable(); // RESTfull을 사용하기 위해서는 csrf 기능을 비활성화해야 함   	

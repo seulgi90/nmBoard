@@ -27,7 +27,7 @@
       <td th:text="${board.no}">번호</td>
 	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
-	    <td>작성자 불러오기</td>
+	    <td th:text="${board.writer.name}"></td>
   </tr>
  </table>
 	  

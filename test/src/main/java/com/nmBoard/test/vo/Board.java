@@ -5,7 +5,9 @@ public class Board {
 	private int no;
 	private String title;
 	private String content;
+	private int userNo;
 	
+	private User writer;
 	
 	
 	public int getNo() {
@@ -41,13 +43,40 @@ public class Board {
 		this.content = content;
 	}
 
+	
+
+	public int getUserNo() {
+		return userNo;
+	}
+
+
+
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
+	}
+
+
+
+	public User getWriter() {
+		return writer;
+	}
+
+
+
+	public void setWriter(User writer) {
+		this.writer = writer;
+	}
+
 
 
 	@Override
 	public String toString() {
-		return "Board [no=" + no + ", title=" + title + ", content=" + content + "]";
+		return "Board [no=" + no + ", title=" + title + ", content=" + content + ", userNo=" + userNo + ", writer="
+				+ writer + "]";
 	}
-	
+
+
+
 	
 	
 }

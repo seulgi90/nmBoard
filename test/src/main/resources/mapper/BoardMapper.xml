@@ -4,18 +4,38 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nmBoard.test.dao.BoardDao">
 
+
+<!--  id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
+	<resultMap type="board" id="boardMap">
+	 <id column="no" property="no"/>
+     <result column="title" property="title"/>
+     <result column="content" property="content"/>
+     <result column="user_no" property="userNo"/>
+	
+	  <association property="writer" javaType="User">
+	      <id column="user_no" property="userNo"/>
+	      <result column="id" property="id"/>
+	      <result column="password" property="password"/>
+	      <result column="name" property="name"/>
+	   </association>
+	    
+	 </resultMap>
+
   <insert id="insert">
 	 insert into board(title, content)
 	 values (#{title}, #{content})
   </insert>
   
-  <select id="findAll" resultType="board">
+  <select id="findAll" resultMap="boardMap">
   	select 
-  	 no,
-  	 title,
-  	 content
+  	 b.no,
+  	 b.title,
+  	 b.content,
+  	 u.name
   	from
-  	 board
+  	 board b 
+  	 join user u on b.user_no = u.user_no
+  	
   </select>
   
   <select id="findByNo" resultType="board">

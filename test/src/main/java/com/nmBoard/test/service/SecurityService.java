@@ -27,7 +27,7 @@ public class SecurityService implements UserDetailsService {
     @Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		
-        //DB로부터 회원 정보를 가져온다.
+        //DB로부터 회원 정보를 가져온다
 		ArrayList<User> userAuthes = userDao.findByUserId(id);
 		
 		if(userAuthes.size() == 0) {
