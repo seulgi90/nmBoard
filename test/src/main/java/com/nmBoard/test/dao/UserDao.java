@@ -13,6 +13,7 @@ public interface UserDao {
 
 		//유저 정보
 		ArrayList<User> findByUserId(@Param("id") String id);
+		//User findByUserId(@Param("id") String id);
 
 		//유저 저장
 		int userSave(User user);

@@ -11,11 +11,12 @@ public class UserRestController {
 	
 
 	@Autowired
-	private UserService securityService;
+	private UserService userService;
 	
 	@PostMapping("/user/save")
 	public String saveUserInfo(@RequestBody User user) {
-		return securityService.JoinUser(user);
+		
+		return userService.joinUser(user);
 	}
 
 }

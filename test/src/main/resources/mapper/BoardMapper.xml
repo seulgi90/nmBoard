@@ -7,64 +7,66 @@
 
 <!--  id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
 	<resultMap type="board" id="boardMap">
-	 <id column="no" property="no"/>
-     <result column="title" property="title"/>
-     <result column="content" property="content"/>
+	 <id column="BOARDNO" property="no"/>
+     <result column="TITLE" property="title"/>
+     <result column="CONTENT" property="content"/>
 	
 	  <association property="writer" javaType="User">
-	      <id column="user_no" property="userNo"/>
-	      <result column="id" property="id"/>
-	      <result column="password" property="password"/>
-	      <result column="name" property="name"/>
+	      <id column="USERNO" property="userNo"/>
+	      <result column="ID" property="id"/>
+	      <result column="PASSWORD" property="password"/>
+	      <result column="NAME" property="name"/>
 	   </association>
 	    
 	 </resultMap>
 
- <insert id="insert" parameterType="board"
-      useGeneratedKeys="true" keyColumn="no" keyProperty="no">
-	 insert into board(title, content, user_no)
-	 values (#{title}, #{content}, #{writer.userNo})
+ <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyColumn="BOARDNO" keyProperty="no">
+	 insert into BOARD
+	     (TITLE, CONTENT, USERNO)
+	 values 
+	     (#{title}, #{content}, #{writer.userNo})
   </insert>
   
   <select id="findAll" resultMap="boardMap">
   	select 
-  	 b.no,
-  	 b.title,
-  	 b.content,
-  	 u.user_no,
-  	 u.name
+	  	 BOARD.BOARDNO,
+	  	 BOARD.TITLE,
+	  	 BOARD.CONTENT,
+	  	 USER.USERNO,
+	  	 USER.NAME,
+	  	 USER.ID
   	from
-  	 board b 
-  	join user u on b.user_no = u.user_no
+  		 BOARD 
+  	join USER on BOARD.USERNO = USER.USERNO
   	
   </select>
   
   <select id="findByNo" resultType="board">
   	select 
-  	 no,
-  	 title,
-  	 content
+	  	 BOARDNO,
+	  	 TITLE,
+	  	 CONTENT
   	from
-  	 board
+  		 BOARD
   	where
-  	 no=#{no}
+  		 BOARDNO=#{no}
   </select>
   
   <update id="update">
    update 
-   	 board 
+   		 BOARD 
    set
-   	title =#{title},
-    content =#{content}
+	   	 TITLE =#{title},
+	     CONTENT =#{content}
    where
-    no =#{no}
+   		 BOARDNO =#{no}
   </update>
   
   <delete id="delete">
   delete from
-   board
+  		 BOARD
   where
-   no=#{no}
+  		 BOARDNO=#{no}
   </delete>
 
 </mapper>

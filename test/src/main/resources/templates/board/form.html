@@ -1,32 +1,36 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NM 게시판 </title>
-  
-  <style>
-  table, th, td {
-    border: 1px solid;
-  }
-  </style>
-</head>	
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NM 게시판</title>
+
+<style>
+table, th, td {
+	border: 1px solid;
+}
+</style>
+</head>
 
 <body>
 
-	<form action="add" method="get">
+	<form action="insertboard" method="get">
 		<table>
 			<tr>
-			 <th>제목</th>
-			 <td><input type="text" name="title"></td>
+				<th>제목</th>
+				<td><input type="text" name="title"></td>
 			</tr>
 			<tr>
-			 <th>내용</th>
-			 <td><textarea name="content" cols="30" rows="5"></textarea></td>
+				<th>내용</th>
+				<td><textarea name="content" cols="30" rows="5"></textarea></td>
 			</tr>
-			
+			<tr>
+				<th>작성자</th>
+				<td><span sec:authentication="name"></td>
+			</tr>
+
 		</table>
-    	<button>등록</button>
+		<button>등록</button>
 	</form>
 
 </body>

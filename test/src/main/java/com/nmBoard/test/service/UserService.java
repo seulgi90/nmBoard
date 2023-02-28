@@ -30,16 +30,20 @@ public class UserService implements UserDetailsService {
         //DB로부터 회원 정보를 가져온다
 		ArrayList<User> userAuthes = userDao.findByUserId(id);
 		
+		System.out.println("userAuthes===>" + userAuthes);
+		
+		
 		if(userAuthes.size() == 0) {
 			throw new UsernameNotFoundException("User "+id+" Not Found!");
 		}
+		
 		//UserDetails 클래스를 상속받은 UserPrincipal 리턴
 		return new UserPrincipal(userAuthes);
 	}
     
-    // 회원 저장
+    // 회원가입도중 오류가 날수 있으므로 transactional을 사용
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-	public String JoinUser(User user) {
+	public String joinUser(User user) {
 		
     	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		

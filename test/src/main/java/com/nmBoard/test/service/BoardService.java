@@ -6,7 +6,7 @@ import com.nmBoard.test.vo.Board;
 
 public interface BoardService {
 
-	   int insert(Board board);
+	   int insertBoard(Board board);
 	   
 	   List<Board> list();
 

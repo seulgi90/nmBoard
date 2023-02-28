@@ -37,6 +37,8 @@ public class LoginController {
 	  // 로그아웃 결과 페이지
     @GetMapping("/logout")
     public String logout() {
+    	
+    System.out.println("logout =====");
         return "/logout";
     }
 }

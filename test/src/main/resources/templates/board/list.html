@@ -22,6 +22,8 @@
       <th>제목</th>
 	    <th>내용</th>
 	    <th>작성자</th>
+	    <th>ID</th>
+	    <th>NO</th>
     </tr>
     
     <tr th:each="board : ${boardList}">
@@ -29,6 +31,8 @@
 	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
 	    <td th:text="${board.writer.name}">작성자</td>
+	    <td th:text="${board.writer.id}">ID</td>
+	    <td th:text="${board.writer.userNo}">ID</td>
   </tr>
  </table>
 	  

@@ -9,7 +9,7 @@ import com.nmBoard.test.vo.Board;
 @Mapper
 public interface BoardDao {
 
-	int insert(Board board);
+	int insertBoard(Board board);
 	
 	List<Board> findAll();
 	

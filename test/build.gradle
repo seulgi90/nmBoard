@@ -22,6 +22,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	runtimeOnly 'mysql:mysql-connector-java'
+	compileOnly 'org.projectlombok:lombok:1.18.26'
 
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

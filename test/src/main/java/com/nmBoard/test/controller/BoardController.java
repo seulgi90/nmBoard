@@ -1,6 +1,9 @@
 package com.nmBoard.test.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +30,14 @@ public class BoardController {
 		return "board/form";
 	}
 	
-	@GetMapping("/add")
-	public String insert(@AuthenticationPrincipal User user, Board board) {
+	@GetMapping("/insertboard")
+	public String insertBoard(@AuthenticationPrincipal User user, Board board) {
+
+board.setWriter(user);
+		boardService.insertBoard(board);
+		System.out.println("data chec ->" + board);
 		
-		boardService.insert(board);
-		System.out.println("userNo = " + user.getUserNo());
+		
 		return "redirect:list";
 	}
 	
@@ -48,7 +54,7 @@ public class BoardController {
 		
 		Board board = boardService.get(no);
 		
-		return new ModelAndView("board/detail", "boardD", board);
+		return new ModelAndView("board/detail", "detailBoard", board);
 	}
 
 	@PostMapping("/update")

@@ -1,5 +1,6 @@
 package com.nmBoard.test.vo;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,13 +14,14 @@ public class UserPrincipal implements UserDetails {
 	// UID값을 명시 해주지 않으면 자바 컴파일러가 임시적인 값을 부여한다.
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<User> user;
-	
+	private ArrayList<User> user;	
+
 	
 	public UserPrincipal(ArrayList<User> userAuthes) {
 		this.user = userAuthes;
 	}
 
+	
 	// 유저가 갖고 있는 권한 목록
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,6 +34,7 @@ public class UserPrincipal implements UserDetails {
 		
 		return authorities;
 	}
+	
 
 	@Override
 	public String getPassword() {
