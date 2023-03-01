@@ -10,76 +10,70 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import com.nmBoard.test.service.UserService;
 
 @Configuration
 @EnableWebSecurity //웹보안 활성화를위한 annotation
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	/* DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다.*/
-	@Bean
-    public DaoAuthenticationProvider authenticationProvider(UserService securityService) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(securityService);
-        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
-        return authenticationProvider;
-    }
-	
-	//실제 인증을 한 이후에 인증이 완료되면 Authentication객체를 반환을 위한 bean등록
-//	@Bean 
-//	public DaoAuthenticationProvider authenticationProvider(UserService userService) {
-//		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//		authenticationProvider.setUserDetailsService(userService);
-//		authenticationProvider.setPasswordEncoder(passwordEncoder());
-//		return authenticationProvider;
-//	}
-	
-    // WebSecurity는 FilterChainProxy를 생성하는 필터
-    // 위 설정을 통해 Spring Security에서 해당 요청은 인증 대상에서 제외
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
-    }
 
-    // antMatchers: 페이지에 접근할 수 있는 권한을 설정
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    	
-    	http.authorizeRequests()
-				.antMatchers("/user/save").permitAll()
-				.antMatchers("/").hasAnyAuthority("ADMIN","USER")
-				.anyRequest().permitAll()
-			    	
-		    .and()
-            		.formLogin() // Form 기반의 로그인인 경우
-            		.usernameParameter("id")
-		            .defaultSuccessUrl("/user/loginSuccess") //로그인 성공 후 이동 페이지
-		       	            
-		     .and()
-					.logout()
-					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.invalidateHttpSession(true) // 로그아웃 이후 세션 전체 삭제 여부
-					.deleteCookies("JSESSIONID");
-    	
-    }
-    
-    
-    // AuthenticationManager: 사용자 인증을 담당
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    	 auth.authenticationProvider(authenticationProvider(userService));
-      
-    }
+  @Autowired
+  private UserService userService;
+
+
+  // 비밀번호 암호화
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  /* DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다.*/
+  @Bean
+  public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+    authenticationProvider.setUserDetailsService(userService);
+    authenticationProvider.setPasswordEncoder(passwordEncoder());
+    return authenticationProvider;
+  }
+
+  // WebSecurity는 FilterChainProxy를 생성하는 필터
+  // 위 설정을 통해 Spring Security에서 해당 요청은 인증 대상에서 제외
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
+  }
+
+  // antMatchers: 페이지에 접근할 수 있는 권한을 설정
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+
+    http.authorizeRequests()
+    .antMatchers("/user/save").permitAll()
+    .antMatchers("/").hasAnyAuthority("ADMIN","USER")
+    .anyRequest().permitAll()
+
+    .and()
+    .formLogin() // Form 기반의 로그인인 경우
+
+    .usernameParameter("id")
+    .defaultSuccessUrl("/user/loginSuccess") //로그인 성공 후 이동 페이지
+
+    .and()
+    .logout()
+    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+    .invalidateHttpSession(true) // 로그아웃 이후 세션 전체 삭제 여부
+    .deleteCookies("JSESSIONID");
+
+  }
+
+
+  // AuthenticationManager: 사용자 인증을 담당
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(authenticationProvider(userService));
+
+  }
 }
-    
+
 
 
