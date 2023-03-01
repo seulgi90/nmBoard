@@ -45,6 +45,13 @@ public class UserPrincipal implements UserDetails {
     return user.get(0).getName();
   }
 
+  // vo의 userNo
+  public int getUserNo() {
+    return user.get(0).getUserNo();
+  }
+
+
+
   // 유저 아이디가 만료되었는지
   @Override
   public boolean isAccountNonExpired() {

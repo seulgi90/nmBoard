@@ -2,6 +2,7 @@ package com.nmBoard.test.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.Board;
-import com.nmBoard.test.vo.User;
+import com.nmBoard.test.vo.UserPrincipal;
 
 
 @Controller
@@ -28,14 +29,11 @@ public class BoardController {
   }
 
   @GetMapping("/insertboard")
-  public String insertBoard(@AuthenticationPrincipal User user , Board board) {
+  public String insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
 
-    // board.setWriter(user);
-
+    board.setUserNo(userPrincipal.getUserNo());
 
     boardService.insertBoard(board);
-    System.out.println("data chec ->" + board);
-
 
     return "redirect:list";
   }

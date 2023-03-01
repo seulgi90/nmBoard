@@ -24,7 +24,7 @@
 	 insert into BOARD
 	     (TITLE, CONTENT, USERNO)
 	 values 
-	     (#{title}, #{content}, #{writer.userNo})
+	     (#{title}, #{content}, #{userNo})
   </insert>
   
   <select id="findAll" resultMap="boardMap">
