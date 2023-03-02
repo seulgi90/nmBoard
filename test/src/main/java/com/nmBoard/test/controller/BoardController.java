@@ -1,8 +1,10 @@
 package com.nmBoard.test.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,65 +12,70 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.Board;
 import com.nmBoard.test.vo.UserPrincipal;
-
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
 
-  @Autowired
-  BoardService boardService;
+	@Autowired
+	BoardService boardService;
 
-  @GetMapping("/form")
-  public String form() {
+	@GetMapping("/form")
+	public String form() {
 
-    return "board/form";
-  }
+		return "board/form";
+	}
 
-  @GetMapping("/insertboard")
-  public String insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
+	  @GetMapping("/insertboard")
+	  @ResponseBody
+	  public Map<String, Object> insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
+		
+	    board.setUserNo(userPrincipal.getUserNo());
+	    
+	    return  boardService.insertBoard(board);
+	    		
 
-    board.setUserNo(userPrincipal.getUserNo());
+	  }
 
-    boardService.insertBoard(board);
+	@GetMapping("/boardlist")
+	public String boardList(Model model) {
 
-    return "redirect:list";
-  }
+		model.addAttribute("boardList", boardService.list());
 
-  @GetMapping("/list")
-  public String list(Model model) {
+		return "board/list";
+	}
 
-    model.addAttribute("boardList", boardService.list());
+	@GetMapping("/detail")
+	public String detailBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no, Model model) throws Exception {
 
-    return "board/list";
-  }
+		Board board = boardService.getBoardNo(no);
+		
+		model.addAttribute("detailBoard", board);
+//		if(userPrincipal.getUserNo() == (board.getWriter().getUserNo())) {
+//			
+//		}
 
-  @GetMapping("/detail")
-  public ModelAndView detail(int no) {
+		return "board/detail";
+	}
 
-    Board board = boardService.get(no);
+	@PostMapping("/updateboard")
+	@ResponseBody
+	public void updateBoard(Board board) {
 
-    return new ModelAndView("board/detail", "detailBoard", board);
-  }
+		boardService.updateBoard(board);
+		System.out.println("up board ==>" + board);
+	}
 
-  @PostMapping("/update")
-  @ResponseBody
-  public void update(Board board) {
+	@PostMapping("/delete")
+	@ResponseBody
+	public void delete(int no) {
 
-    boardService.update(board);
+		boardService.delete(no);
 
-  }
-
-  @PostMapping("/delete")
-  @ResponseBody
-  public void delete(int no) {
-
-    boardService.delete(no);
-
-  }
-
+	}
 
 }

@@ -15,7 +15,7 @@
 
 <body>
 
-<form id="detail">
+<form action="updateboard" id="detail" method="post">
 	<table>
    		<tr>
 		 <th>번호</th>
@@ -36,7 +36,7 @@
 	
 		<button type="button" onclick="update(this.form)">수정</button>
 		<button type="button" th:onclick="'remove(' + ${detailBoard.no} + ');'">삭제</button>
-      	<a href='list'>목록</a>
+      	<button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
       
 	</form>
 	
@@ -47,20 +47,24 @@
 
 <script>
 function update(form) {
-	var form1 = $("#detail").serialize();
-	console.log(form1);
-	var result = confirm('글을 수정 하시겠습니까?');
 	
+	let updateBoardData = $("#detail").serialize();
+	
+	console.log(updateBoardData + "<----updateBoard");
+	
+	let result = confirm('글을 수정 하시겠습니까?');
+	console.log(result + "<----result"); // true
 	if (result == true) {
 		
 		$.ajax({
-			url : "update",
-			type : "POST",
-			data : form1,
-			dataType : "text",
+			type : "post",
+			url : "updateboard",
+			data: updateBoardData,
+			dataType:"text",
 			success : function(data) {
+				console.log(data + "<---suc");
 				alert('글 수정 성공');
-				window.location.href = "/detail?no" + no;
+				window.location.href = "/detail?no=" + no;
 			}
 		}); // ajax
 		
@@ -71,23 +75,24 @@ function update(form) {
 
 function remove(no) {
 	
-	var form2 = $("#detail").serialize();
-	var result = confirm('글을 삭제 하시겠습니까?');
+	let removeBoard = $("#detail").serialize();
+	
+	let result = confirm('글을 삭제 하시겠습니까?');
 	 
 	 if (result == true) {
 		 
 		    $.ajax({
+		    	type: "POST",
 		        url: "delete",
-		        type: "POST",
-		        data: form2,
+		        data: removeBoard,
 		  	    success : function(data) {
 		  		alert('글 삭제 성공');
-		  			window.location.href = "/main/list";
+		  			window.location.href = "/board/boardlist";
 		  			}
 		  		}); // ajax 
 	 } else {
 		 alert('글 삭제 취소');
-		 window.location.href = "/main/detail?no=" + no;
+		 window.location.href = "/board/detail?no=" + no;
 	 }
  }
 </script>

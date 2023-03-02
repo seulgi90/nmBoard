@@ -14,15 +14,15 @@ table, th, td {
 
 <body>
 
-	<form action="insertboard" method="get">
+	<form action="insertboard" id="insertForm" method="get">
 		<table>
 			<tr>
 				<th>제목</th>
-				<td><input type="text" name="title"></td>
+				<td><input type="text" name="title" id="title"></td>
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td><textarea name="content" cols="30" rows="5"></textarea></td>
+				<td><textarea name="content" id="content" cols="30" rows="5"></textarea></td>
 			</tr>
 			<tr>
 				<th>작성자</th>
@@ -30,8 +30,69 @@ table, th, td {
 			</tr>
 
 		</table>
-		<button>등록</button>
+		<input type="button" id="submit" value="글쓰기" onclick="insertBoard()">
+		<input type="button" value="다시쓰기" onclick="reset()">
+		<a href="/board/boardlist"><input type="button" value="취소"></a>
 	</form>
+	
 
 </body>
+
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script>
+function insertBoard() {
+	
+	let result = confirm('글을 등록하시겠습니까?');
+	
+	let titleCheck =  document.getElementById('title').value;
+	let contentCheck =  document.getElementById('content').value;
+	
+	if (result == true) {
+		
+		if(titleCheck == "") {
+			alert("이름 입력 필수");
+			return false;
+		}
+		if(contentCheck == "") {
+			alert("내용 입력 필수");
+			return false;
+		}
+		
+		let insertFormData = $("#insertForm").serialize();
+		
+		$.ajax({
+			type: "get",
+			url: "insertboard",
+			data: insertFormData,
+			dataType: "text",
+			success: function(data) {
+				
+				let result = JSON.parse(data);
+				
+				if(result.status > 0) { // 인서트 성공
+					
+					alert('등록 성공');
+					window.location.href = "/board/boardlist";
+					 
+				} else {
+					
+					alert('등록 실패');
+					return;
+				}
+			},
+			
+			error : function(data) {
+					alert('에러 발생');
+				}
+		
+		}); // ajax
+		
+	} else if(result == false) {
+		alert('글 등록 취소');
+		return;
+	}
+}
+</script>
+
 </html>

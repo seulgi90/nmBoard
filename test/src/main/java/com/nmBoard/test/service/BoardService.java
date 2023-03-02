@@ -1,19 +1,20 @@
 package com.nmBoard.test.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nmBoard.test.vo.Board;
 
 public interface BoardService {
 
-	   int insertBoard(Board board);
-	   
-	   List<Board> list();
+	Map<String, Object> insertBoard(Board board);
+	    
+	    List<Board> list();
 
-	   Board get(int no);
+	    Board getBoardNo(int no);
 
-	   int update(Board board);
+	    int updateBoard(Board board);
 
-	   int delete(int no);
+	    int delete(int no);
 
 }

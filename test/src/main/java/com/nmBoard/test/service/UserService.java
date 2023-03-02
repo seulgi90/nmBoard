@@ -22,10 +22,7 @@ public class UserService implements UserDetailsService {
 
     //DB로부터 회원 정보를 가져온다
     ArrayList<User> userAuthes = userDao.findByUserId(id);
-
-    System.out.println("userAuthes===>" + userAuthes);
-    System.out.println("userAuthes id===>" + id);
-
+    
     if(userAuthes.size() == 0) {
       throw new UsernameNotFoundException("User "+id+" Not Found!");
     }

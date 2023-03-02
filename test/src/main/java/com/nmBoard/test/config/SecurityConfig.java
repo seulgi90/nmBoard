@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  /* DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다.*/
+  // DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다
   @Bean
   public DaoAuthenticationProvider authenticationProvider(UserService userService) {
     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
     .antMatchers("/user/save").permitAll()
     .antMatchers("/").hasAnyAuthority("ADMIN","USER")
-    .anyRequest().permitAll()
+//    .anyRequest().permitAll()
 
     .and()
     .formLogin() // Form 기반의 로그인인 경우

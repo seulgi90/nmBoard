@@ -1,10 +1,11 @@
 package com.nmBoard.test.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.nmBoard.test.dao.BoardDao;
 import com.nmBoard.test.vo.Board;
@@ -16,8 +17,18 @@ public class BoardServiceImpl implements BoardService {
 	BoardDao boardDao;
 	
 	@Override
-	public int insertBoard(Board board) {
-		return	boardDao.insertBoard(board);
+	public Map<String, Object> insertBoard(Board board) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int result = boardDao.insertBoard(board);
+		
+		if(result > 0) {
+			
+			map.put("status", result);
+		}
+		
+		return	map;
 	}
 
 	@Override
@@ -27,14 +38,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board get(int no) {
+	public Board getBoardNo(int no) {
 		return boardDao.findByNo(no);
 	}
 
 	@Override
-	public int update(Board board) {
+	public int updateBoard(Board board) {
 		
-		return boardDao.update(board);
+		return boardDao.updateBoard(board);
 	}
 
 	@Override

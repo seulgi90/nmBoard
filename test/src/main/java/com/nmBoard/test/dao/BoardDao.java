@@ -15,7 +15,7 @@ public interface BoardDao {
 	
 	Board findByNo(int no);
 
-	int update(Board board);
+	int updateBoard(Board board);
 
 	int delete(int no);
 }

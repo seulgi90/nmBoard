@@ -41,18 +41,22 @@
   	
   </select>
   
-  <select id="findByNo" resultType="board">
-  	select 
-	  	 BOARDNO,
-	  	 TITLE,
-	  	 CONTENT
+  <select id="findByNo" resultMap="boardMap">
+   	select 
+	  	 BOARD.BOARDNO,
+	  	 BOARD.TITLE,
+	  	 BOARD.CONTENT,
+	  	 USER.USERNO,
+	  	 USER.NAME,
+	  	 USER.ID
   	from
-  		 BOARD
+  		 BOARD 
+  	join USER on BOARD.USERNO = USER.USERNO
   	where
-  		 BOARDNO=#{no}
+  		 BOARD.BOARDNO=#{no}
   </select>
   
-  <update id="update">
+  <update id="updateBoard">
    update 
    		 BOARD 
    set
