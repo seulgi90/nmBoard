@@ -1,8 +1,9 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
+<!--   <meta charset="utf-8"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
   <title>NM 게시판 </title>
   
   <style>
@@ -36,7 +37,7 @@
 	
 		<button type="button" onclick="update(this.form)">수정</button>
 		<button type="button" th:onclick="'remove(' + ${detailBoard.no} + ');'">삭제</button>
-      	<button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
+    <button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
       
 	</form>
 	
@@ -57,14 +58,18 @@ function update(form) {
 	if (result == true) {
 		
 		$.ajax({
-			type : "post",
+			type : "POST",
 			url : "updateboard",
 			data: updateBoardData,
 			dataType:"text",
+	     contentType: "application/json",
+	     
 			success : function(data) {
-				console.log(data + "<---suc");
+				
 				alert('글 수정 성공');
 				window.location.href = "/detail?no=" + no;
+				
+				console.log(data + "<---suc");
 			}
 		}); // ajax
 		

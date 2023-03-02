@@ -1,8 +1,6 @@
 package com.nmBoard.test.controller;
 
-import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.Board;
 import com.nmBoard.test.vo.UserPrincipal;
@@ -21,61 +17,61 @@ import com.nmBoard.test.vo.UserPrincipal;
 @RequestMapping("/board")
 public class BoardController {
 
-	@Autowired
-	BoardService boardService;
+  @Autowired
+  BoardService boardService;
 
-	@GetMapping("/form")
-	public String form() {
+  @GetMapping("/form")
+  public String form() {
 
-		return "board/form";
-	}
+    return "board/form";
+  }
 
-	  @GetMapping("/insertboard")
-	  @ResponseBody
-	  public Map<String, Object> insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
-		
-	    board.setUserNo(userPrincipal.getUserNo());
-	    
-	    return  boardService.insertBoard(board);
-	    		
+  @GetMapping("/insertboard")
+  @ResponseBody
+  public Map<String, Object> insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
 
-	  }
+    board.setUserNo(userPrincipal.getUserNo());
 
-	@GetMapping("/boardlist")
-	public String boardList(Model model) {
+    return  boardService.insertBoard(board);
 
-		model.addAttribute("boardList", boardService.list());
 
-		return "board/list";
-	}
+  }
 
-	@GetMapping("/detail")
-	public String detailBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no, Model model) throws Exception {
+  @GetMapping("/boardlist")
+  public String boardList(Model model) {
 
-		Board board = boardService.getBoardNo(no);
-		
-		model.addAttribute("detailBoard", board);
-//		if(userPrincipal.getUserNo() == (board.getWriter().getUserNo())) {
-//			
-//		}
+    model.addAttribute("boardList", boardService.list());
 
-		return "board/detail";
-	}
+    return "board/list";
+  }
 
-	@PostMapping("/updateboard")
-	@ResponseBody
-	public void updateBoard(Board board) {
+  @GetMapping("/detail")
+  public String detailBoard(int no, Model model) throws Exception {
 
-		boardService.updateBoard(board);
-		System.out.println("up board ==>" + board);
-	}
+    model.addAttribute("detailBoard", boardService.getBoardNo(no));
+    return "board/detail";
+  }
 
-	@PostMapping("/delete")
-	@ResponseBody
-	public void delete(int no) {
+  @PostMapping("/updateboard")
+  @ResponseBody
+  public String updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board, Model model) {
+    System.out.println("board 실==>" + board);
+    //    if(userPrincipal.getUserNo() == (board.getWriter().getUserNo())) {
 
-		boardService.delete(no);
+    boardService.updateBoard(board);
+    model.addAttribute("detailBoard", board);
+    //    }
 
-	}
+    System.out.println("up board ==>" + board);
+    return "board/list";
+  }
+
+  @PostMapping("/delete")
+  @ResponseBody
+  public void delete(int no) {
+
+    boardService.delete(no);
+
+  }
 
 }
