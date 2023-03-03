@@ -47,30 +47,33 @@ public class BoardController {
 
   @GetMapping("/detail")
   public String detailBoard(int no, Model model) throws Exception {
-
+	
     model.addAttribute("detailBoard", boardService.getBoardNo(no));
+    System.out.println("model -> " + model);
     return "board/detail";
   }
 
   @PostMapping("/updateboard")
-  @ResponseBody
-  public String updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board, Model model) {
-    System.out.println("board 실==>" + board);
-    //    if(userPrincipal.getUserNo() == (board.getWriter().getUserNo())) {
-
-    boardService.updateBoard(board);
-    model.addAttribute("detailBoard", board);
-    //    }
-
-    System.out.println("up board ==>" + board);
-    return "board/list";
+  public String updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board) throws Exception{
+	
+    if(userPrincipal.getUserNo() == (board.getUserNo())) {
+    	
+    	boardService.updateBoard(board);
+    	
+    	return "redirect:/board/boardlist";
+    	
+    } else {
+    	throw new Exception("게시글 작성자가 아닙니다");
+    }
+	
   }
 
-  @PostMapping("/delete")
-  @ResponseBody
-  public void delete(int no) {
-
+  @PostMapping("/deleteboard")
+  public String deleteBoard(int no) {
+	
     boardService.delete(no);
+    
+    return "redirect:/board/boardlist";
 
   }
 

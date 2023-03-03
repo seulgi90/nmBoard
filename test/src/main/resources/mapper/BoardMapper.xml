@@ -10,6 +10,7 @@
 	 <id column="BOARDNO" property="no"/>
      <result column="TITLE" property="title"/>
      <result column="CONTENT" property="content"/>
+     <result column="USERNO" property="userNo"/>
 	
 	  <association property="writer" javaType="User">
 	      <id column="USERNO" property="userNo"/>
@@ -46,7 +47,7 @@
 	  	 BOARD.BOARDNO,
 	  	 BOARD.TITLE,
 	  	 BOARD.CONTENT,
-	  	 USER.USERNO,
+	  	 BOARD.USERNO,
 	  	 USER.NAME,
 	  	 USER.ID
   	from

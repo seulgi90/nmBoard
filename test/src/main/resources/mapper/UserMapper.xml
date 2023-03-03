@@ -5,8 +5,8 @@
 <mapper namespace="com.nmBoard.test.dao.UserDao">
   
 
-  <!-- 로그인 -->
-  <select id="findByUserId" resultType="User">
+    <!-- 로그인 -->
+    <select id="findByUserId" resultType="User">
 		select
 			USER.USERNO,
 			USER.ID,
@@ -22,11 +22,12 @@
     </select>
     
      <!-- 회원가입 -->
-<!--     <insert id="saveUser"> -->
-<!--         INSERT INTO TB_USER -->
-<!--         (USER_ID, USER_PW, USER_NAME, USER_AUTH, APPEND_DATE, UPDATE_DATE) -->
-<!--         VALUES(#{userId},#{userPw},#{userName},#{userAuth},#{appendDate},#{updateDate}); -->
-<!--     </insert> -->
+    <insert id="userSave" parameterType="user" useGeneratedKeys="true" keyColumn="USERNO" keyProperty="userNo">
+        insert into USER
+        	(ID, PASSWORD, NAME)
+        values
+        	(#{id},#{password},#{name});
+    </insert>
     
     <insert id="userRoleSave">
 		insert into USERROLE
