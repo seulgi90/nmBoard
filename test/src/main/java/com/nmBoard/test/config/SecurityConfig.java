@@ -48,13 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http.authorizeRequests()
-    .antMatchers("/user/save").anonymous()
+    .antMatchers("/user/save").permitAll()
     .antMatchers("/").hasAnyAuthority("ROLE_ADMIN","ROLE_USER") // hasAnyAuthority: 사용자가 주어진 권한 중 어떤 것이라도 있으면 접근 허용
     .anyRequest().permitAll()
 
     .and()
     .formLogin() // Form 기반의 로그인인 경우
-
     .usernameParameter("id")
     .defaultSuccessUrl("/user/loginSuccess") //로그인 성공 후 이동 페이지
 
@@ -63,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
     .invalidateHttpSession(true) // 로그아웃 이후 세션 전체 삭제 여부
     .deleteCookies("JSESSIONID");
-    
-//    http.csrf().disable();
+
+    http.csrf().disable();
 
   }
 
