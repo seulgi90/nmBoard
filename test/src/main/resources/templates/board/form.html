@@ -14,7 +14,7 @@ table, th, td {
 
 <body>
 
-	<form action="insertboard" id="insertForm" method="get">
+	<form action="insertboard" id="insertForm" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>제목</th>
@@ -28,9 +28,12 @@ table, th, td {
 				<th>작성자</th>
 				<td><span sec:authentication="name"></td>
 			</tr>
+			 <tr>
+          <th>첨부파일</th><td><input name='files' type="file" multiple></td>
+       </tr>
 
 		</table>
-		<input type="button" id="submit" value="글쓰기" onclick="insertBoard()">
+		<input type="button" value="글쓰기" onclick="insertBoard()">
 		<input type="button" value="다시쓰기" onclick="reset()">
 		<a href="/board/boardlist"><input type="button" value="취소"></a>
 	</form>
@@ -38,7 +41,6 @@ table, th, td {
 
 </body>
 
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <script>
 function insertBoard() {
@@ -59,40 +61,17 @@ function insertBoard() {
 			return false;
 		}
 		
-		let insertFormData = $("#insertForm").serialize();
+		let insertBoard = document.getElementById("insertForm");
+		console.log(insertForm + "<< data");
 		
-		$.ajax({
-			type: "get",
-			url: "insertboard",
-			data: insertFormData,
-			dataType: "text",
-			success: function(data) {
-				
-				let result = JSON.parse(data);
-				
-				if(result.status > 0) { // 인서트 성공
-					
-					alert('등록 성공');
-					window.location.href = "/board/boardlist";
-					 
-				} else {
-					
-					alert('등록 실패');
-					return;
-				}
-			},
-			
-			error : function(data) {
-					alert('에러 발생');
-				}
+		insertBoard.action ="insertboard";
+		insertBoard.method = "post";
+		insertBoard.submit();
 		
-		}); // ajax
-		
-	} else if(result == false) {
-		alert('글 등록 취소');
-		return;
+		alert('글 등록 성공');
 	}
 }
+
 </script>
 
 </html>

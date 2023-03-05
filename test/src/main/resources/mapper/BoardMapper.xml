@@ -18,8 +18,14 @@
 	      <result column="PASSWORD" property="password"/>
 	      <result column="NAME" property="name"/>
 	   </association>
+	   
+    <collection property="attachedFiles" ofType="attachedFile">
+      <id column="ATTACHEDFILENO" property="attachedFileNo" />
+      <result column="FILEPATH" property="filepath" />
+    </collection>
+    
+  </resultMap>
 	    
-	 </resultMap>
 
  <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyColumn="BOARDNO" keyProperty="no">
 	 insert into BOARD
@@ -49,10 +55,13 @@
 	  	 BOARD.CONTENT,
 	  	 BOARD.USERNO,
 	  	 USER.NAME,
-	  	 USER.ID
+	  	 USER.ID,
+	  	 ATTACHEDFILE.ATTACHEDFILENO,
+       ATTACHEDFILE.FILEPATH
   	from
   		 BOARD 
   	join USER on BOARD.USERNO = USER.USERNO
+  	left outer join ATTACHEDFILE on ATTACHEDFILE.BOARDNO = BOARD.BOARDNO
   	where
   		 BOARD.BOARDNO=#{no}
   </select>
@@ -73,5 +82,26 @@
   where
   		 BOARDNO=#{no}
   </delete>
+  
+  <insert id="insertFiles" parameterType="board">
+      insert into ATTACHEDFILE
+        (FILEPATH, BOARDNO) 
+      values 
+      <foreach collection="attachedFiles" item="file" separator=",">
+        (#{file.filepath}, #{no}) 
+      </foreach>
+  </insert>
+  
+<!--   <select id="findFilesByBoard"> -->
+<!--     select -->
+<!-- 	    ATTACHEDFILENO, -->
+<!-- 	    FILEPATH, -->
+<!-- 	    BOARDNO -->
+<!--     from -->
+<!--       ATTACHEDFILE -->
+<!--     where -->
+<!--       BOARDNO =#{no} -->
+<!--   </select> -->
+  
 
 </mapper>
