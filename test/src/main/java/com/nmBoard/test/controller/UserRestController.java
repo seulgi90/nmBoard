@@ -23,17 +23,10 @@ public class UserRestController {
   @PostMapping("/user/save")
   public String signUp(User user) {
 
-    System.out.println("user save->>" + user);
     user.setRoleName("ROLE_USER");
     userService.joinUser(user);
-    System.out.println("user save result->>" + user);
+    
     return "redirect:/login";
   }
-
-  //  	@PostMapping("/user/save")
-  //  	public String saveUserInfo(@RequestBody User user) {
-  //  		
-  //  		return userService.joinUser(user);
-  //  	}
 
 }

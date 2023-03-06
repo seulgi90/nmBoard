@@ -11,7 +11,7 @@ public interface BoardService {
 
   Board getBoardNo(int no);
 
-  int updateBoard(Board board);
+  int updateBoard(Board board) throws Exception;
 
   int delete(int no);
 

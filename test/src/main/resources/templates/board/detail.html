@@ -16,7 +16,7 @@
 
 <body>
 
-<form id="detail">
+<form id="detail" enctype="multipart/form-data">
 	<table>
    		<tr>
 		 <th>번호</th>
@@ -24,11 +24,11 @@
 		</tr>
 		<tr>
 		 <th>제목</th>
-		 <td><input type="text" name="title" th:value="${detailBoard.title}"></td>
+		 <td><input type="text" name="title" th:value="${detailBoard.title}"  id="title"></td>
 		</tr>
 		<tr>
 		 <th>내용</th>
-		 <td><textarea name="content" cols="30" rows="5" th:text="${detailBoard.content}"></textarea></td>
+		 <td><textarea name="content" cols="30" rows="5" th:text="${detailBoard.content}"  id="content"></textarea></td>
 		</tr>
 		
   <tr>
@@ -42,38 +42,99 @@
                  파일 추가: <input name='files' type="file" multiple>
          </td>
   </tr>
+		<!-- 로그인한 유저(detailBoard.userNo) == 작성자(detailBoard.writer.userNo) 일치 여부 확인 -->
+  		<input type="hidden" name="userNo" th:value="${detailBoard.writer.userNo}">
+		<input type="hidden" name="userNo" th:value="${detailBoard.userNo}">
    
 	</table>
-	
-	<button type="button" sec:authorize="isAuthenticated()" onclick="update(this.form)">수정</button>
-	<button type="button" sec:authorize="isAuthenticated()" th:if="${detailBoard.writer.userNo == detailBoard.userNo}" th:onclick="'deleteBoard(' + ${detailBoard.no} + ');'">삭제</button>
-  <button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
+		<button type="button" onclick="update(this.form)">수정</button>
+		<button type="button" th:onclick="'deleteBoard(' + ${detailBoard.no} + ');'">삭제</button>
+		<button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
       
 	</form>
 	
 
 </body>
 
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 <script>
 function update(form) {
-
-	form.action ="updateboard";
-	form.method = "post";
-	form.submit();
 	
- 	alert("글 수정 성공");
+	let updateBoard = $("#detail").serialize();
+	
+	let result = confirm('글을 수정하시겠습니까?');
+	
+	let titleCheck =  document.getElementById('title').value;
+	let contentCheck =  document.getElementById('content').value;
+	
+	if(result == true) {
+		
+		if(titleCheck == "") {
+			alert("제목 입력 필수");
+			return false;
+		}
+		if(contentCheck == "") {
+			alert("내용 입력 필수");
+			return false;
+		}
+		
+		$.ajax({
+			type : "post",
+			url : "updateboard",
+			data : updateBoard,
+			dataType : "text",
+			success : function(data) {
+				
+				let updateBoard = JSON.parse(data);
+				
+				if(updateBoard.status > 0) {
+					
+					alert('글 수정 성공');
+	 				window.location.href = "/board/detail?no=" + updateBoard.boardNo;
+				}
+				
+			}
+		}); // ajax
+		
+	} else {
+		
+		alert('글 수정 취소');
+	}
 }
 
 function deleteBoard(no) {
 	
-	let deleteBoard = document.getElementById("detail");
+	let deleteBoard = $("#detail").serialize();
 	
-	deleteBoard.action ="deleteboard";
-	deleteBoard.method = "post";
-	deleteBoard.submit();
+	let result = confirm('글을 삭제 하시겠습니까?');
 	
-	alert("글 삭제 성공");
+	if(result == true) {
+		
+		$.ajax({
+			type : "post",
+			url : "deleteboard",
+			data : deleteBoard,
+			dataType : "text",
+			success : function(data) {
+				
+				let deleteBoard = JSON.parse(data);
+				
+				if(deleteBoard.status > 0) {
+					
+					alert('글 삭제 성공');
+	 				window.location.href = "/board/boardlist";
+				}
+				
+			}
+		}); // ajax
+		
+	} else {
+		alert('글 삭제 취소');
+	}
 	
  }
+ 
+ 
 </script>
 </html>

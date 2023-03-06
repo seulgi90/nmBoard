@@ -13,7 +13,7 @@
   
 </head>	
 
-<a href='form' sec:authorize="isAuthenticated()">글쓰기</a>
+<a href='form'>글쓰기</a>
 <a th:href="@{/main}">메인 이동</a>
 
  <table>
@@ -25,7 +25,7 @@
     </tr>
     
     <tr th:each="board : ${boardList}">
-      <td th:text="${board.no}">번호</td>
+     	<td th:text="${board.no}">번호</td>
 	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
 	    <td th:text="${board.writer.name}">작성자</td>

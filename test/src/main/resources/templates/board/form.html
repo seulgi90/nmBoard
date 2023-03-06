@@ -14,7 +14,7 @@ table, th, td {
 
 <body>
 
-	<form action="insertboard" id="insertForm" method="post" enctype="multipart/form-data">
+	<form id="insertForm" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>제목</th>
@@ -53,7 +53,7 @@ function insertBoard() {
 	if (result == true) {
 		
 		if(titleCheck == "") {
-			alert("이름 입력 필수");
+			alert("제목 입력 필수");
 			return false;
 		}
 		if(contentCheck == "") {
@@ -62,7 +62,6 @@ function insertBoard() {
 		}
 		
 		let insertBoard = document.getElementById("insertForm");
-		console.log(insertForm + "<< data");
 		
 		insertBoard.action ="insertboard";
 		insertBoard.method = "post";
