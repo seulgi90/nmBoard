@@ -61,7 +61,7 @@ public class BoardController {
 		return "board/list";
 	}
 
-	@GetMapping("/detail")
+	@GetMapping("/detailboard")
 	public String detailBoard(int no, Model model) throws Exception {
 
 		model.addAttribute("detailBoard", boardService.getBoardNo(no));
@@ -71,44 +71,66 @@ public class BoardController {
 
 	@PostMapping("/updateboard")
 	@ResponseBody
-	public Map<String, Object> updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board, @RequestParam("files")MultipartFile[] files) throws Exception {
+	public Map<String, Object> updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
+			@RequestParam("files") MultipartFile[] files) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (userPrincipal.getUserNo() == (board.getUserNo())) {
 
-			int result = boardService.updateBoard(board);
-			
 			board.setAttachedFiles(saveAttachedFiles(files));
-			
+			int result = boardService.updateBoard(board);
+
 			map.put("status", result);
 			map.put("boardNo", board.getNo());
 
 			return map;
-
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			throw new Exception();
 		}
-
 	}
 
 	@PostMapping("/deleteboard")
 	@ResponseBody
-	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no) throws Exception {
+	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no)
+			throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if(boardService.getBoardNo(no).getWriter().getUserNo() == userPrincipal.getUserNo()) {
-			
-		int result = boardService.delete(no);
+		if (boardService.getBoardNo(no).getWriter().getUserNo() == userPrincipal.getUserNo()) {
 
-		map.put("status", result);
-		
-		return map;
-		
+			int result = boardService.deleteBoard(no);
+
+			map.put("status", result);
+
+			return map;
+		} else {
+			throw new Exception();
+		}
+	}
+
+	@GetMapping("/filedelete")
+	public String fileDelete(@RequestParam("no") int no, @AuthenticationPrincipal UserPrincipal userPrincipal)
+			throws Exception {
+		// @RequestParam("no") 값을 받아서 int no로 받는다
+
+		// 첨부 파일 정보 가져오기
+		AttachedFile attachedFile = boardService.getAttachedFile(no);
+		// 해당 첨부 파일이 있는 게시글 가져오기
+		Board board = boardService.getBoardNo(attachedFile.getBoardNo());
+
+		if (board.getUserNo() == userPrincipal.getUserNo()) {
+
+			// 첨부파일을 삭제
+			if (boardService.deleteAttachedFile(no) == 0) {
+				throw new Exception("게시글 첨부파일 삭제 할 수 없습니다");
+			}
+
 		} else {
 			throw new Exception("게시글 작성자가 아닙니다");
 		}
+
+		return "redirect:detailboard?no=" + board.getNo();
 
 	}
 
@@ -121,7 +143,6 @@ public class BoardController {
 
 		// 프로젝트 디렉터리 내의 저장을 위한 경로 설정
 		String dirPath = sc.getRealPath("/board/files");
-		System.out.println("dirPath-->" + dirPath);
 
 		for (MultipartFile part : files) {
 			if (part.isEmpty()) {
@@ -138,5 +159,5 @@ public class BoardController {
 
 		return attachedFiles;
 	}
-	
+
 }

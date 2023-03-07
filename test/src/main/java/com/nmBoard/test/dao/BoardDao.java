@@ -2,6 +2,8 @@ package com.nmBoard.test.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+
+import com.nmBoard.test.vo.AttachedFile;
 import com.nmBoard.test.vo.Board;
 
 @Mapper
@@ -15,10 +17,16 @@ public interface BoardDao {
 
   int updateBoard(Board board);
 
-  int delete(int no);
+  int deleteBoard(int no);
 
   int insertFiles(Board board);
 
-  //  AttachedFile findFileByNo(int fileNo);
+  AttachedFile findByAttachedFileNo(int attahedFileNo);
+
+  // 선택 된 첨부파일 삭제
+  int deleteAttachedFile(int attahedFileNo);
+
+  // 게시글 삭제 시 첨부 파일 같이 삭제
+  int deleteFiles(int no);
 
 }

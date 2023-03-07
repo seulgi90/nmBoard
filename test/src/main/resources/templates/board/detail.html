@@ -16,7 +16,7 @@
 
 <body>
 
-<form id="detail" enctype="multipart/form-data">
+<form id="detail">
 	<table>
    		<tr>
 		 <th>번호</th>
@@ -37,6 +37,7 @@
             <ul>
                <li th:each="file : ${detailBoard.attachedFiles}">
                  <a th:href="@{/board/files/{path}(path=${file.filepath})}" th:text="${file.filepath}"></a>
+                 [[<a th:href="@{filedelete(no=${file.attachedFileNo})}">파일삭제</a>]]
                </li>
              </ul> 
                  파일 추가: <input name='files' type="file" multiple>
@@ -61,10 +62,16 @@
 <script>
 function update(form) {
 	
-	let updateBoard = $("#detail").serialize();
+	// Current request is not a multipart request 에러가 발생
+	// 	let updateBoard = $("#detail").serialize();
+	
+	// Current request is not a multipart request 에러가 발생 해결책
+	// => FormData 인터페이스 :  form 필드와 그 값을 나타내는 데이터로 이루어져 있다
+	// =>  new FormData(form) : 인코딩 타입이 "multipart/form-data"으로 설정되어 form(html 태그)에서 사용하는 것과 동일한 포맷을 사용하게 된다
+	let updateBoard = new FormData(form);
 	
 	let result = confirm('글을 수정하시겠습니까?');
-	
+
 	let titleCheck =  document.getElementById('title').value;
 	let contentCheck =  document.getElementById('content').value;
 	
@@ -81,9 +88,12 @@ function update(form) {
 		
 		$.ajax({
 			type : "post",
+			enctype: 'multipart/form-data',
 			url : "updateboard",
 			data : updateBoard,
 			dataType : "text",
+			processData: false,
+			contentType: false,
 			success : function(data) {
 				
 				let updateBoard = JSON.parse(data);
@@ -91,10 +101,13 @@ function update(form) {
 				if(updateBoard.status > 0) {
 					
 					alert('글 수정 성공');
-	 				window.location.href = "/board/detail?no=" + updateBoard.boardNo;
+	 				window.location.href = "/board/detailboard?no=" + updateBoard.boardNo;
 				}
 				
-			}
+			},
+			error: function(xhr) {
+			    alert('게시글 작성자가 아닙니다');
+			  }
 		}); // ajax
 		
 	} else {
@@ -126,7 +139,10 @@ function deleteBoard(no) {
 	 				window.location.href = "/board/boardlist";
 				}
 				
-			}
+			},
+			 error: function(xhr) {
+				 alert('게시글 작성자가 아닙니다');
+				  }
 		}); // ajax
 		
 	} else {

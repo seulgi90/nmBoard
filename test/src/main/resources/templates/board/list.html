@@ -26,7 +26,7 @@
     
     <tr th:each="board : ${boardList}">
      	<td th:text="${board.no}">번호</td>
-	    <td><a th:href="@{/board/detail(no=${board.no})}" th:text="${board.title}"></a></td>
+	    <td><a th:href="@{/board/detailboard(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
 	    <td th:text="${board.writer.name}">작성자</td>
   </tr>

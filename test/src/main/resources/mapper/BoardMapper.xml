@@ -4,104 +4,125 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nmBoard.test.dao.BoardDao">
 
-<!--  id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
+	<!-- id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
 	<resultMap type="board" id="boardMap">
-	 <id column="BOARDNO" property="no"/>
-     <result column="TITLE" property="title"/>
-     <result column="CONTENT" property="content"/>
-     <result column="USERNO" property="userNo"/>
-	
-	  <association property="writer" javaType="User">
-	      <id column="USERNO" property="userNo"/>
-	      <result column="ID" property="id"/>
-	      <result column="PASSWORD" property="password"/>
-	      <result column="NAME" property="name"/>
-	   </association>
-	   
-    <collection property="attachedFiles" ofType="attachedFile">
-      <id column="ATTACHEDFILENO" property="attachedFileNo" />
-      <result column="FILEPATH" property="filepath" />
-    </collection>
-    
-  </resultMap>
-	    
+		<id column="BOARDNO" property="no" />
+		<result column="TITLE" property="title" />
+		<result column="CONTENT" property="content" />
+		<result column="USERNO" property="userNo" />
 
- <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyColumn="BOARDNO" keyProperty="no">
-	 insert into BOARD
-	     (TITLE, CONTENT, USERNO)
-	 values 
-	     (#{title}, #{content}, #{userNo})
-  </insert>
-  
-  <select id="findAll" resultMap="boardMap">
-  	select 
-	  	 BOARD.BOARDNO,
-	  	 BOARD.TITLE,
-	  	 BOARD.CONTENT,
-	  	 USER.USERNO,
-	  	 USER.NAME,
-	  	 USER.ID
-  	from
-  		 BOARD 
-  	join USER on BOARD.USERNO = USER.USERNO
-  	order by BOARD.BOARDNO;
-  	
-  </select>
-  
-  <select id="findByNo" resultMap="boardMap">
-   	select 
-	  	 BOARD.BOARDNO,
-	  	 BOARD.TITLE,
-	  	 BOARD.CONTENT,
-	  	 BOARD.USERNO,
-	  	 USER.NAME,
-	  	 USER.ID,
-	  	 ATTACHEDFILE.ATTACHEDFILENO,
-       	 ATTACHEDFILE.FILEPATH
-  	from
-  		 BOARD 
-  	join USER on BOARD.USERNO = USER.USERNO
-  	left outer join ATTACHEDFILE on ATTACHEDFILE.BOARDNO = BOARD.BOARDNO
-  	where
-  		 BOARD.BOARDNO=#{no}
-  </select>
-  
-  <update id="updateBoard">
-   update 
-   		 BOARD 
-   set
-	   	 TITLE =#{title},
-	     CONTENT =#{content}
-   where
-   		 BOARDNO =#{no}
-  </update>
-  
-  <delete id="delete">
-  delete from
-  		 BOARD
-  where
-  		 BOARDNO=#{no}
-  </delete>
-  
-  <insert id="insertFiles" parameterType="board">
-      insert into ATTACHEDFILE
-        (FILEPATH, BOARDNO) 
-      values 
-      <foreach collection="attachedFiles" item="file" separator=",">
-        (#{file.filepath}, #{no}) 
-      </foreach>
-  </insert>
-  
-<!--   <select id="findFilesByBoard"> -->
-<!--     select -->
-<!-- 	    ATTACHEDFILENO, -->
-<!-- 	    FILEPATH, -->
-<!-- 	    BOARDNO -->
-<!--     from -->
-<!--       ATTACHEDFILE -->
-<!--     where -->
-<!--       BOARDNO =#{no} -->
-<!--   </select> -->
-  
+		<association property="writer" javaType="User">
+			<id column="USERNO" property="userNo" />
+			<result column="ID" property="id" />
+			<result column="PASSWORD" property="password" />
+			<result column="NAME" property="name" />
+		</association>
+
+		<collection property="attachedFiles" ofType="attachedFile">
+			<id column="ATTACHEDFILENO" property="attachedFileNo" />
+			<result column="FILEPATH" property="filepath" />
+		</collection>
+
+	</resultMap>
+	
+	<resultMap type="attachedFile" id="attachedFileMap">
+		<id column="ATTACHEDFILENO" property="attachedFileNo" />
+		<result column="filepath" property="filepath" />
+		<result column="BOARDNO" property="boardNo" />
+	</resultMap>
+
+
+	<insert id="insertBoard" parameterType="board"
+		useGeneratedKeys="true" keyColumn="BOARDNO" keyProperty="no">
+		insert into BOARD
+			(TITLE, CONTENT, USERNO)
+		values
+			(#{title}, #{content}, #{userNo})
+	</insert>
+
+	<select id="findAll" resultMap="boardMap">
+		select
+			BOARD.BOARDNO,
+			BOARD.TITLE,
+			BOARD.CONTENT,
+			USER.USERNO,
+			USER.NAME,
+			USER.ID
+		from
+			BOARD
+		join USER on BOARD.USERNO = USER.USERNO
+		order by BOARD.BOARDNO;
+
+	</select>
+
+	<select id="findByNo" resultMap="boardMap">
+		select
+			BOARD.BOARDNO,
+			BOARD.TITLE,
+			BOARD.CONTENT,
+			BOARD.USERNO,
+			USER.NAME,
+			USER.ID,
+			ATTACHEDFILE.ATTACHEDFILENO,
+			ATTACHEDFILE.FILEPATH
+		from
+			BOARD
+		join USER on BOARD.USERNO = USER.USERNO
+		left outer join ATTACHEDFILE on ATTACHEDFILE.BOARDNO = BOARD.BOARDNO
+		where
+			BOARD.BOARDNO=#{no}
+	</select>
+
+	<update id="updateBoard">
+		update
+			BOARD
+		set
+			TITLE =#{title},
+			CONTENT =#{content}
+		where
+			BOARDNO =#{no}
+	</update>
+
+	<delete id="deleteBoard">
+		delete from
+			BOARD
+		where
+			BOARDNO=#{no}
+	</delete>
+
+	<insert id="insertFiles" parameterType="board">
+		insert into ATTACHEDFILE
+			(FILEPATH, BOARDNO)
+		values
+		<foreach collection="attachedFiles" item="file" separator=",">
+			(#{file.filepath}, #{no})
+		</foreach>
+	</insert>
+
+
+	<select id="findByAttachedFileNo" resultMap="attachedFileMap">
+		select
+			ATTACHEDFILENO,
+			FILEPATH,
+			BOARDNO
+		from
+			ATTACHEDFILE
+		where
+			ATTACHEDFILENO =#{attachedFileNo}
+	</select>
+
+	<delete id="deleteAttachedFile">
+		delete from
+			ATTACHEDFILE
+		where
+			ATTACHEDFILENO=#{attachedFileNo}
+	</delete>
+
+	<delete id="deleteFiles">
+		delete from
+			ATTACHEDFILE
+		where
+			BOARDNO=#{no}
+	</delete>
 
 </mapper>
