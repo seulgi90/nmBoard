@@ -31,6 +31,34 @@
 	    <td th:text="${board.writer.name}">작성자</td>
   </tr>
  </table>
+ 
+<!--  페이징 -->
+ <div id="pagination">
+	<!-- 맨 처음 페이지로 이동하는 버튼 -->
+<!--     <span th:if="${pagination.startPage > 1}"> -->
+        <a th:href="@{'/board/boardlist?page=1'}" th:value="'처음'">[처음]</a>
+<!--     </span> -->
+
+	<!-- 이전 블록으로 이동하는 버튼 -->
+<!--     <span th:if="${pagination.existPrevPage == true}"> -->
+    	<a th:href="@{'/board/boardlist?page='+${cri.page - 1}}" th:value="'이전'">[이전]</a>
+<!--     </span> -->
+
+    <!-- 시퀀스 보여주는 값을 변경. -->
+    <span th:each="pageNum : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+        <a class="div2" th:href="@{'/board/boardlist?page='+${pageNum}}" th:text="${pageNum}"></a>
+    </span>
+	
+    <!-- 다음 블록으로 이동하는 버튼 -->
+<!--     <span th:if="${pagination.existNextPage == true}"> -->
+	<a th:href="@{'/board/boardlist?page='+|${pagination.endPage + 1}|}" th:value="'다음'">[다음]</a>
+<!--     </span> -->
+	
+    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
+<!--     <span th:if="${pagination.endPage < pagination.totalPageCount}"> -->
+	<a th:href="@{'/board/boardlist?page='+${pagination.totalPageCount}}" th:value="끝">[끝]</a>
+<!--     </span> -->
+</div>
 	  
  
 <body>

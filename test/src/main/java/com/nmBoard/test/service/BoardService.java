@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.nmBoard.test.vo.AttachedFile;
 import com.nmBoard.test.vo.Board;
+import com.nmBoard.test.vo.Criteria;
 
 public interface BoardService {
 
   void insertBoard(Board board) throws Exception;
 
-  List<Board> list();
+//  List<Board> list();
+  
+  List<Board> getPageList(Criteria cri);
 
   Board getBoardNo(int no);
 
@@ -20,5 +23,8 @@ public interface BoardService {
   AttachedFile getAttachedFile(int attahedFileNo) throws Exception;
 
   int deleteAttachedFile(int attahedFileNo) throws Exception;
+  
+  /** 페이징을 위한 전체 데이터 개수 파악 */
+  int getCount();
 
 }

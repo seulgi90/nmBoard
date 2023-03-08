@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nmBoard.test.dao.BoardDao">
 
-	<!-- id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
+<!-- id : 연결 정보를 가리키는 식별자. SQL문을 설정할 때 사용 -->
 	<resultMap type="board" id="boardMap">
 		<id column="BOARDNO" property="no" />
 		<result column="TITLE" property="title" />
@@ -40,19 +40,47 @@
 			(#{title}, #{content}, #{userNo})
 	</insert>
 
-	<select id="findAll" resultMap="boardMap">
+<!-- 	<select id="findAll" resultMap="boardMap"> -->
+<!-- 		select -->
+<!-- 			BOARD.BOARDNO, -->
+<!-- 			BOARD.TITLE, -->
+<!-- 			BOARD.CONTENT, -->
+<!-- 			USER.USERNO, -->
+<!-- 			USER.NAME, -->
+<!-- 			USER.ID, -->
+<!-- 			USER.ROLENAME -->
+<!-- 		from -->
+<!-- 			BOARD -->
+<!-- 		join USER on BOARD.USERNO = USER.USERNO -->
+<!-- 		order by -->
+<!-- 			BOARD.BOARDNO -->
+<!-- 	</select> -->
+
+<!-- 	페이징처리된 리스트 -->
+	<select id="getPageList" parameterType="criteria" resultMap="boardMap">
 		select
 			BOARD.BOARDNO,
 			BOARD.TITLE,
 			BOARD.CONTENT,
 			USER.USERNO,
 			USER.NAME,
-			USER.ID
+			USER.ID,
+			USER.ROLENAME
 		from
 			BOARD
 		join USER on BOARD.USERNO = USER.USERNO
-		order by BOARD.BOARDNO;
+		order by 
+			BOARD.BOARDNO
+		limit #{pagination.limitStart}, #{recordSize} 
+<!-- 	limit #{시작 위치(몇 번째 데이터부터 가지고 올 것인지)를 지정}, #{시작 위치를 기준으로 가지고 올 데이터의 개수} -->
+	</select>
 
+<!-- 	페이징을 위한 게시물 총 개수  -->
+	<select id="getCount" resultType="int">
+		select
+			COUNT(*)
+		from
+			BOARD
 	</select>
 
 	<select id="findByNo" resultMap="boardMap">

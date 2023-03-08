@@ -1,8 +1,6 @@
 package com.nmBoard.test.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nmBoard.test.dao.BoardDao;
 import com.nmBoard.test.vo.AttachedFile;
 import com.nmBoard.test.vo.Board;
+import com.nmBoard.test.vo.Criteria;
+import com.nmBoard.test.vo.Pagination;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -33,11 +33,22 @@ public class BoardServiceImpl implements BoardService {
 		}
 
 	}
+	
+//	@Override
+//	public List<Board> list() {
+//
+//		return boardDao.findAll();
+//	}
 
 	@Override
-	public List<Board> list() {
+	public List<Board> getPageList(Criteria cri) {
 
-		return boardDao.findAll();
+		return boardDao.getPageList(cri);
+	}
+	
+	@Override
+	public int getCount() {
+		return boardDao.getCount();
 	}
 
 	@Override
@@ -81,5 +92,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		return boardDao.deleteAttachedFile(attahedFileNo);
 	}
+	
+	
 	
 }

@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nmBoard.test.service.BoardService;
 import com.nmBoard.test.vo.AttachedFile;
 import com.nmBoard.test.vo.Board;
+import com.nmBoard.test.vo.Criteria;
+import com.nmBoard.test.vo.Pagination;
 import com.nmBoard.test.vo.UserPrincipal;
 
 @Controller
@@ -53,10 +56,27 @@ public class BoardController {
 		return "redirect:boardlist";
 	}
 
-	@GetMapping("/boardlist")
-	public String boardList(Model model) {
+//	@GetMapping("/boardlist")
+//	public String boardList(Model model) {
+//
+//		model.addAttribute("boardList", boardService.list());
+//
+//		return "board/list";
+//	}
 
-		model.addAttribute("boardList", boardService.list());
+	@GetMapping("/boardlist")
+//	public String boardList(Model model,Criteria cri, @RequestParam(value = "page", defaultValue = "1") int page) {
+	public String boardList(Model model, Criteria cri) {
+
+		// 모든 게시글 수 구하기
+		Pagination pagination = new Pagination(boardService.getCount(), cri);
+		// 계산된 페이지 정보 저장
+		cri.setPagination(pagination);
+
+		model.addAttribute("boardList", boardService.getPageList(cri));
+//		model.addAttribute("page", page);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("cri", cri);
 
 		return "board/list";
 	}
