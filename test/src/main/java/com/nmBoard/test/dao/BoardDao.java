@@ -35,4 +35,11 @@ public interface BoardDao {
   // 페이징을 위한 전체 데이터 개수
   int getCount();
 
+  List<Board> findByKeyword(String keyword);
+
+
+
+  
+  
+
 }

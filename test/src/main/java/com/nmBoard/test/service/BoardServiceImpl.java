@@ -93,6 +93,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.deleteAttachedFile(attahedFileNo);
 	}
 	
-	
+	@Transactional
+	@Override
+	public List<Board> searchKeyword(String keyword) {
+		
+		return boardDao.findByKeyword(keyword);
+	}
 	
 }

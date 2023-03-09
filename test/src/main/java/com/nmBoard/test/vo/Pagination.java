@@ -18,7 +18,7 @@ public class Pagination {
 	private boolean existNextPage; // 다음 페이지 존재 여부
 
 	private Criteria cri;
-
+	
 	public Pagination(int totalRecordCount, Criteria cri) {
 		if (totalRecordCount > 0) {
 			this.totalRecordCount = totalRecordCount;

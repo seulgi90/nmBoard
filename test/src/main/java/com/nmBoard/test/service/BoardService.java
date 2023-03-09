@@ -25,6 +25,10 @@ public interface BoardService {
   int deleteAttachedFile(int attahedFileNo) throws Exception;
   
   /** 페이징을 위한 전체 데이터 개수 파악 */
-  int getCount();
+  int getCount(); 
+  
+  List<Board> searchKeyword(String keyword);
+
+  
 
 }
