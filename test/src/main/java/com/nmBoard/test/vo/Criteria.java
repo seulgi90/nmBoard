@@ -27,4 +27,9 @@ public class Criteria {
 		this.pageSize = 5;
 	}
     
+    public int getOffset() {
+        return (page - 1) * recordSize;
+        
+    }
+    
 }

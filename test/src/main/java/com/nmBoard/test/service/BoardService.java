@@ -10,8 +10,7 @@ public interface BoardService {
 
   void insertBoard(Board board) throws Exception;
 
-//  List<Board> list();
-  
+  // 전체 게시글 + 페이징
   List<Board> getPageList(Criteria cri);
 
   Board getBoardNo(int no);
@@ -25,10 +24,7 @@ public interface BoardService {
   int deleteAttachedFile(int attahedFileNo) throws Exception;
   
   /** 페이징을 위한 전체 데이터 개수 파악 */
-  int getCount(); 
-  
-  List<Board> searchKeyword(String keyword);
-
+  int getCountBoard(); 
   
 
 }

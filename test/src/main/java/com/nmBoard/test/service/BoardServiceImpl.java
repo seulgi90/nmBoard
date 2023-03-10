@@ -34,12 +34,6 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 	
-//	@Override
-//	public List<Board> list() {
-//
-//		return boardDao.findAll();
-//	}
-
 	@Override
 	public List<Board> getPageList(Criteria cri) {
 
@@ -47,10 +41,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int getCount() {
-		return boardDao.getCount();
+	public int getCountBoard() {
+		return boardDao.getCountBoard();
 	}
-
+	
 	@Override
 	public Board getBoardNo(int no) {
 		return boardDao.findByNo(no);
@@ -59,11 +53,6 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public int updateBoard(Board board) throws Exception {
-		
-//		// 게시글 수정
-//		if (boardDao.updateBoard(board) == 0) {
-//			throw new Exception("게시글 수정 실패!");
-//		}
 		// 첨부파일 등록
 		if (board.getAttachedFiles().size() > 0) {
 			boardDao.insertFiles(board);
@@ -91,13 +80,6 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteAttachedFile(int attahedFileNo) throws Exception {
 		
 		return boardDao.deleteAttachedFile(attahedFileNo);
-	}
-	
-	@Transactional
-	@Override
-	public List<Board> searchKeyword(String keyword) {
-		
-		return boardDao.findByKeyword(keyword);
 	}
 	
 }

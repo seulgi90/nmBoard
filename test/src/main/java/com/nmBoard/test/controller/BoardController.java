@@ -55,67 +55,37 @@ public class BoardController {
 
 		return "redirect:boardlist";
 	}
-
-//	@GetMapping("/boardlist")
-//	public String boardList(Model model) {
-//
-//		model.addAttribute("boardList", boardService.list());
-//
-//		return "board/list";
-//	}
-//
-//	@GetMapping("/boardlist")
-////	public String boardList(Model model,Criteria cri, @RequestParam(value = "page", defaultValue = "1") int page) {
-//	public String boardList(Model model, Criteria cri) {
-//
-//		// 모든 게시글 수 구하기
-//		Pagination pagination = new Pagination(boardService.getCount(), cri);
-//		// 계산된 페이지 정보 저장
-//		cri.setPagination(pagination);
-//
-//		model.addAttribute("boardList", boardService.getPageList(cri));
-////		model.addAttribute("page", page);
-//		model.addAttribute("pagination", pagination);
-//		model.addAttribute("cri", cri);
-//
-//		return "board/list";
-//	}
 	
 	@GetMapping("/boardlist")
-	public String boardList(Model model, Criteria cri, String keyword) {
+	public String boardList(Model model, @ModelAttribute("cri") Criteria cri,  @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-		
 		List<Board> boardList = new ArrayList<>();
 		Pagination pagination;
 
-		if (keyword != null) {
+		if (!(keyword == null || keyword.equals(""))) {
 
-			System.out.println("k->>" + keyword); // k->>aa
 			boardList = boardService.getPageList(cri);
-			// keyword 포함된 게시글 수 
-			pagination = new Pagination(boardService.getCount(), cri);
 			
-			System.out.println("boardList->>" + boardList); // 10개
-			System.out.println("cri->>" + cri); // cri->>Criteria(page=1, recordSize=10, pageSize=5, pagination=null, keyword=aa)
+			// keyword 포함된 게시글 수 
+			pagination = new Pagination(boardService.getCountBoard(), cri);
+			
 
 		} else {
 
 			boardList = boardService.getPageList(cri);
+			
 			// 모든 게시글 수 구하기
-			pagination = new Pagination(boardService.getCount(), cri);
-
+			pagination = new Pagination(boardService.getCountBoard(), cri);
+			
 		}
 		
 		// 계산된 페이지 정보 저장
 		cri.setPagination(pagination);
-
-		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("cri", cri);
-		model.addAttribute("searchBoard", boardService.searchKeyword(keyword));
+		model.addAttribute("keyword", keyword);
  
-		System.out.println("model--->" +model);
 		return "board/list";
 	}
 
@@ -144,7 +114,7 @@ public class BoardController {
 
 			return map;
 		} else {
-			throw new Exception();
+			throw new Exception("게시글 작성자가 아닙니다");
 		}
 	}
 
@@ -163,7 +133,7 @@ public class BoardController {
 
 			return map;
 		} else {
-			throw new Exception();
+			throw new Exception("게시글 작성자가 아닙니다");
 		}
 	}
 

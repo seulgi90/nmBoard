@@ -40,8 +40,9 @@
 			(#{title}, #{content}, #{userNo})
 	</insert>
 
-<!-- 	<select id="findAll" resultMap="boardMap"> -->
-<!-- 		select -->
+<!-- 	페이징 + 검색 리스트 -->
+	<select id="getPageList" parameterType="criteria" resultMap="boardMap">
+		select *
 <!-- 			BOARD.BOARDNO, -->
 <!-- 			BOARD.TITLE, -->
 <!-- 			BOARD.CONTENT, -->
@@ -49,23 +50,6 @@
 <!-- 			USER.NAME, -->
 <!-- 			USER.ID, -->
 <!-- 			USER.ROLENAME -->
-<!-- 		from -->
-<!-- 			BOARD -->
-<!-- 		join USER on BOARD.USERNO = USER.USERNO -->
-<!-- 		order by -->
-<!-- 			BOARD.BOARDNO -->
-<!-- 	</select> -->
-
-<!-- 	페이징처리된 리스트 -->
-	<select id="getPageList" parameterType="criteria" resultMap="boardMap">
-		select
-			BOARD.BOARDNO,
-			BOARD.TITLE,
-			BOARD.CONTENT,
-			USER.USERNO,
-			USER.NAME,
-			USER.ID,
-			USER.ROLENAME
 		from
 			BOARD
 		join USER on BOARD.USERNO = USER.USERNO
@@ -78,16 +62,36 @@
 		</if>
 		order by 
 			BOARD.BOARDNO
-		limit #{page}, #{recordSize} 
+		LIMIT #{offset}, #{recordSize} 
 <!--  	limit #{시작 위치(몇 번째 데이터부터 가지고 올 것인지)를 지정}, #{시작 위치를 기준으로 가지고 올 데이터의 개수} -->
 	</select>
 	
 <!-- 	페이징을 위한 게시물 총 개수  -->
-	<select id="getCount" resultType="int">
+	<select id="getCountBoard" resultType="int">
+		select
+			COUNT(BOARDNO)
+		from
+			BOARD
+		<if test="keyword != null and keyword != ''">
+		where
+			BOARD.BOARDNO LIKE CONCAT ('%', #{keyword}, '%')
+			or BOARD.TITLE LIKE CONCAT ('%', #{keyword}, '%')
+			or BOARD.CONTENT LIKE CONCAT ('%', #{keyword}, '%')
+			or USER.NAME LIKE CONCAT ('%', #{keyword}, '%')
+		</if>
+	</select>
+	
+<!-- 	페이징을 위한 키워드 포함 게시물 총 개수  -->
+	<select id="getCountByKeyword" resultType="int">
 		select
 			COUNT(*)
 		from
 			BOARD
+		where
+			BOARD.BOARDNO LIKE CONCAT ('%', #{keyword}, '%')
+			or BOARD.TITLE LIKE CONCAT ('%', #{keyword}, '%')
+			or BOARD.CONTENT LIKE CONCAT ('%', #{keyword}, '%')
+			or USER.NAME LIKE CONCAT ('%', #{keyword}, '%')
 	</select>
 
 	<select id="findByNo" resultMap="boardMap">
@@ -159,23 +163,5 @@
 		where
 			BOARDNO=#{no}
 	</delete>
-	
-	<select id="findByKeyword" resultMap="boardMap">
-		select
-			BOARD.BOARDNO,
-			BOARD.TITLE,
-			BOARD.CONTENT,
-			USER.NAME
-		from
-			BOARD
-		join USER on BOARD.USERNO = USER.USERNO
-		<if test="keyword != null and keyword != ''">
-		where
-			BOARD.BOARDNO LIKE CONCAT ('%', #{keyword}, '%')
-			or BOARD.TITLE LIKE CONCAT ('%', #{keyword}, '%')
-			or BOARD.CONTENT LIKE CONCAT ('%', #{keyword}, '%')
-			or USER.NAME LIKE CONCAT ('%', #{keyword}, '%')
-		</if>
-	</select>
 	
 </mapper>

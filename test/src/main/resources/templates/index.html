@@ -8,7 +8,8 @@
     <h1>메인 페이지</h1>
     <hr>
     <a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
-    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
     <a sec:authorize="isAnonymous()" th:href="@{/user/joinform}">회원가입</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/board/boardlist}">게시판 이동</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
 </body>
 </html>

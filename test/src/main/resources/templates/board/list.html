@@ -13,17 +13,13 @@
   
 </head>	
 
-<a href='form'>글쓰기</a>
+<a th:href='form' >글쓰기</a>
 <a th:href="@{/main}">메인 이동</a>
+
   <!--/* 검색 */-->
-<!--  <form action="boardlist" method="get" id="searchForm"> -->
-<!-- 	  <input type="text" name="keyword" placeholder="검색어를 입력해주세요" th:value="${keyword}"> -->
-<!--       <button id='searchBtn'>검색</button><br> -->
-<!--  </form> -->
- 
- <form action="/board/boardlist" method="get" id="searchForm">
+ <form action="/board/boardlist" method="get">
     <input type="text" name="keyword" placeholder="검색어를 입력해주세요" th:value="${keyword}">
-    <button type="submit" id="searchBtn">검색</button>
+    <button type="submit">검색</button>
 </form>
       
  <table>
@@ -34,61 +30,28 @@
 	    <th>작성자</th>
     </tr>
     
-    <tbody>
-        <!-- CONTENTS !-->
-        <tr th:each="searchBoard : ${searchBoard}">
-            <td>
-                <span th:text="${searchBoard.no}"></span>
-            </td>
-            <td>
-                <span th:text="${searchBoard.title}"></span>
-            </td>
-            <td>
-                <span th:text="${searchBoard.content}"></span>
-            </td>
-            <td>
-                <span th:text="${searchBoard.writer.name}"></span>
-            </td>
-        </tr>
-        </tbody>
-    
-    <tr th:each="board : ${boardList}">
+	<tbody id="list">
+    <tr th:if="${not #lists.isEmpty( boardList )}" th:each="board : ${boardList}">
      	<td th:text="${board.no}">번호</td>
 	    <td><a th:href="@{/board/detailboard(no=${board.no})}" th:text="${board.title}"></a></td>
 	    <td th:text="${board.content}">내용</td>
 	    <td th:text="${board.writer.name}">작성자</td>
   </tr>
+		<tr th:unless="${not #lists.isEmpty( boardList )}">
+			<td colspan="5">조회된 결과가 없습니다.</td>
+		</tr>
+	</tbody>
  </table>
- 
-<!--  페이징 -->
-<!--  <div id="pagination"> -->
-<!-- 	맨 처음 페이지로 이동하는 버튼 -->
-<!--         <a th:href="@{'/board/boardlist?page=1'}" th:value="'처음'">[처음]</a> -->
-
-<!-- 	이전 블록으로 이동하는 버튼 -->
-<!--     	<a th:href="@{'/board/boardlist?page='+${cri.page - 1}'}" th:value="'이전'">[이전]</a> -->
-
-<!--     시퀀스 보여주는 값을 변경. -->
-<!--     <span th:each="pageNum : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"> -->
-<!--         <a class="div2" th:href="@{'/board/boardlist?page='+${pageNum}}" th:text="${pageNum}"></a> -->
-<!--     </span> -->
-	
-<!--     다음 블록으로 이동하는 버튼 -->
-<!-- 	<a th:href="@{'/board/boardlist?page='+|${pagination.endPage + 1}|}" th:value="'다음'">[다음]</a> -->
-	
-<!--     맨 뒷 페이지로 이동하는 버튼 -->
-<!-- 	<a th:href="@{'/board/boardlist?page='+${pagination.totalPageCount}}" th:value="끝">[끝]</a> -->
-<!-- </div> -->
 
 <!-- 페이징 -->
 <div id="pagination">
 <!--     맨 처음 페이지로 이동하는 버튼 -->
-    <a th:href="@{/board/boardlist(page=1)}" >[처음]</a>
-<!--     <a th:href="@{/board/boardlist(page=1, keyword=(keyword != null ? keyword : null))}" >[처음]</a> -->
+    <a th:href="@{/board/boardlist(page=1)}" th:value="[처음]">[처음]</a>
+<!--     <a th:href="@{/board/boardlist(page=1, keyword=${keyword})}" th:value="[처음]">[처음]</a> -->
 
 <!--     이전 블록으로 이동하는 버튼 -->
-    <span th:if="${pagination.existPrevPage == true}">
-        <a th:href="@{'/board/boardlist(page=${cri.page - 1}, keyword=${keyword})}" th:value="[이전]">[이전]</a>
+	<span th:if="${pagination.existPrevPage == true}">
+        <a th:href="@{/board/boardlist(page=${cri.page - 1}, keyword=${keyword})}" th:value="[이전]">[이전]</a>
     </span>
 
 <!--     시퀀스 보여주는 값을 변경. -->

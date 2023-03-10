@@ -12,8 +12,6 @@ public interface BoardDao {
 
   int insertBoard(Board board);
 
-//  List<Board> findAll();
-  
   List<Board> getPageList(Criteria cri);
 
   Board findByNo(int no);
@@ -33,13 +31,6 @@ public interface BoardDao {
   int deleteFiles(int no);
 
   // 페이징을 위한 전체 데이터 개수
-  int getCount();
-
-  List<Board> findByKeyword(String keyword);
-
-
-
+  int getCountBoard();
   
-  
-
 }
