@@ -94,6 +94,7 @@ public class BoardController {
 		if (userPrincipal.getUserNo() == board.getUserNo()) {
 
 			board.setAttachedFiles(saveAttachedFiles(files));
+			
 			int result = boardService.updateBoard(board);
 
 			map.put("status", result);
@@ -101,7 +102,8 @@ public class BoardController {
 
 			return map;
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			// throw new Exception("게시글 작성자가 아닙니다"); -> 중국어 등 다국어일 경우 글자깨짐, 해석 등 어떻게 할 것인지?
+			throw new Exception();
 		}
 	}
 
@@ -120,7 +122,7 @@ public class BoardController {
 
 			return map;
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			throw new Exception();
 		}
 	}
 
@@ -142,7 +144,7 @@ public class BoardController {
 			}
 
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			throw new Exception();
 		}
 
 		return "redirect:detail?no=" + board.getNo();
