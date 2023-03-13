@@ -48,51 +48,35 @@ public class BoardController {
 		return "board/form";
 	}
 
-	@PostMapping("/insertboard")
-	public String insertBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
+	@PostMapping("/board")
+	public String writeBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
 			@RequestParam("files") MultipartFile[] files) throws Exception {
 
 		board.setUserNo(userPrincipal.getUserNo());
 		board.setAttachedFiles(saveAttachedFiles(files));
-		boardService.insertBoard(board);
+		boardService.writeBoard(board);
 
 		return "redirect:boardlist";
 	}
 	
 	@GetMapping("/boardlist")
-	public String boardList(Model model, @ModelAttribute("cri") Criteria cri,  @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+	public String boardList(Model model, @ModelAttribute("cri") Criteria cri, @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-		List<Board> boardList = new ArrayList<>();
-		Pagination pagination;
-
-		if (!(keyword == null || keyword.equals(""))) {
-
-			boardList = boardService.getPageList(cri);
-			
-			// keyword 포함된 게시글 수 
-			pagination = new Pagination(boardService.getCountBoard(), cri);
-			
-
-		} else {
-
-			boardList = boardService.getPageList(cri);
-			
-			// 모든 게시글 수 구하기
-			pagination = new Pagination(boardService.getCountBoard(), cri);
-			
-		}
+		List<Board> boardList = boardService.getPageList(cri);
+		
+		Pagination pagination = new Pagination(boardService.getCountBoard(), cri);
 		
 		// 계산된 페이지 정보 저장
 		cri.setPagination(pagination);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
-		model.addAttribute("cri", cri);
+//		model.addAttribute("cri", cri);
 		model.addAttribute("keyword", keyword);
- 
+		
 		return "board/list";
 	}
 
-	@GetMapping("/detailboard")
+	@GetMapping("/detail")
 	public String detailBoard(int no, Model model) throws Exception {
 
 		model.addAttribute("detailBoard", boardService.getBoardNo(no));
@@ -100,14 +84,14 @@ public class BoardController {
 		return "board/detail";
 	}
 
-	@PostMapping("/updateboard")
+	@PostMapping("/update")
 	@ResponseBody
 	public Map<String, Object> updateBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
 			@RequestParam("files") MultipartFile[] files) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if (userPrincipal.getUserNo() == (board.getUserNo())) {
+		if (userPrincipal.getUserNo() == board.getUserNo()) {
 
 			board.setAttachedFiles(saveAttachedFiles(files));
 			int result = boardService.updateBoard(board);
@@ -115,16 +99,16 @@ public class BoardController {
 			map.put("status", result);
 			map.put("boardNo", board.getNo());
 
-			return map;
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			map.put("error", "게시글 작성자가 아닙니다");
 		}
+		
+		return map;
 	}
 
-	@PostMapping("/deleteboard")
+	@PostMapping("/delete")
 	@ResponseBody
-	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no)
-			throws Exception {
+	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -134,15 +118,15 @@ public class BoardController {
 
 			map.put("status", result);
 
-			return map;
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			map.put("error", "게시글 작성자가 아닙니다");
 		}
+		
+		return map;
 	}
 
-	@GetMapping("/filedelete")
-	public String fileDelete(@RequestParam("no") int no, @AuthenticationPrincipal UserPrincipal userPrincipal)
-			throws Exception {
+	@GetMapping("/attachedfile/delete")
+	public String deleteFile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("no") int no, Model model) throws Exception {
 		// @RequestParam("no") 값을 받아서 int no로 받는다
 
 		// 첨부 파일 정보 가져오기
@@ -154,14 +138,14 @@ public class BoardController {
 
 			// 첨부파일을 삭제
 			if (boardService.deleteAttachedFile(no) == 0) {
-				throw new Exception("게시글 첨부파일 삭제 할 수 없습니다");
+				 model.addAttribute("error", "게시글 첨부파일 삭제 할 수 없습니다");
 			}
 
 		} else {
-			throw new Exception("게시글 작성자가 아닙니다");
+			 model.addAttribute("error", "게시글 첨부파일 삭제 할 수 없습니다");
 		}
 
-		return "redirect:detailboard?no=" + board.getNo();
+		return "redirect:detail?no=" + board.getNo();
 
 	}
 
@@ -176,7 +160,7 @@ public class BoardController {
 		String dirPath = sc.getRealPath("/board/files");
 
 		for (MultipartFile part : files) {
-			if (part.isEmpty()) {
+			if (part.isEmpty()) { 
 				continue;
 			}
 

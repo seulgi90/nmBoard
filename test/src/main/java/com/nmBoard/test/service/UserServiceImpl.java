@@ -16,11 +16,11 @@ import com.nmBoard.test.vo.User;
 import com.nmBoard.test.vo.UserPrincipal;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 
 	private UserDao userDao;
 	
-	public UserService(UserDao userDao) {
+	public UserServiceImpl(UserDao userDao) {
 		this.userDao = userDao;
 	}
 

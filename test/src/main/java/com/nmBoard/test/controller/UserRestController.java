@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.nmBoard.test.service.UserService;
+import com.nmBoard.test.service.UserServiceImpl;
 import com.nmBoard.test.vo.User;
 
 @Controller
 public class UserRestController {
 
-  private UserService userService;
+  private UserServiceImpl userService;
   
-  public UserRestController(UserService userService) {
+  public UserRestController(UserServiceImpl userService) {
 	  this.userService = userService;
 }
   

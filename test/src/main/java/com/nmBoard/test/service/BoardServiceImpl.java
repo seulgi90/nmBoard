@@ -23,10 +23,10 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Transactional
 	@Override
-	public void insertBoard(Board board) throws Exception {
+	public void writeBoard(Board board) throws Exception {
 
 		// 게시글 등록
-		if (boardDao.insertBoard(board) == 0) {
+		if (boardDao.writeBoard(board) == 0) {
 			throw new Exception("게시글 등록 실패!");
 		}
 

@@ -1,12 +1,12 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<!--   <meta charset="utf-8"> -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-  <title>NM 게시판 </title>
-  
-  <style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>NM 게시판</title>
+
+<style>
   table, th, td {
   border: 1px solid;
   }
@@ -16,42 +16,39 @@
 
 <body>
 
-<form id="detail">
-	<table>
-   		<tr>
-		 <th>번호</th>
-		 <td><input type="text" name="no" th:value="${detailBoard.no}" readonly></td>
-		</tr>
-		<tr>
-		 <th>제목</th>
-		 <td><input type="text" name="title" th:value="${detailBoard.title}"  id="title"></td>
-		</tr>
-		<tr>
-		 <th>내용</th>
-		 <td><textarea name="content" cols="30" rows="5" th:text="${detailBoard.content}"  id="content"></textarea></td>
-		</tr>
-		
-  <tr>
-     <th>첨부파일</th>
-         <td>
-            <ul>
-               <li th:each="file : ${detailBoard.attachedFiles}">
-                 <a th:href="@{/board/files/{path}(path=${file.filepath})}" th:text="${file.filepath}"></a>
-                 [[<a th:href="@{filedelete(no=${file.attachedFileNo})}">파일삭제</a>]]
-               </li>
-             </ul> 
-                 파일 추가: <input name='files' type="file" multiple>
-         </td>
-  </tr>
-		<!-- 로그인한 유저(detailBoard.userNo) == 작성자(detailBoard.writer.userNo) 일치 여부 확인 -->
-  		<input type="hidden" name="userNo" th:value="${detailBoard.writer.userNo}">
-		<input type="hidden" name="userNo" th:value="${detailBoard.userNo}">
-   
-	</table>
+	<form id="detail">
+		<table>
+			<tr>
+				<th>번호</th>
+				<td><input type="text" name="no" th:value="${detailBoard.no}" readonly></td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td><input type="text" name="title" th:value="${detailBoard.title}" id="title"></td>
+			</tr>
+			<tr>
+				<th>내용</th>
+				<td><textarea name="content" cols="30" rows="5" th:text="${detailBoard.content}" id="content"></textarea></td>
+			</tr>
+			<tr>
+				<th>첨부파일</th>
+				<td>
+					<ul>
+						<li th:each="file : ${detailBoard.attachedFiles}">
+							<a th:href="@{/board/files/{path}(path=${file.filepath})}" th:text="${file.filepath}"></a>
+							[[<a th:href="@{attachedfile/delete(no=${file.attachedFileNo})}">파일삭제</a>]]
+						</li>
+					</ul>
+					[파일 추가]: <input name='files' type="file" multiple>
+				</td>
+			</tr>
+			<!-- 로그인한 유저(detailBoard.userNo) == 작성자(detailBoard.writer.userNo) 일치 여부 확인 -->
+			<input type="hidden" name="userNo" th:value="${detailBoard.writer.userNo}">
+			<input type="hidden" name="userNo" th:value="${detailBoard.userNo}">
+		</table>
 		<button type="button" onclick="update(this.form)">수정</button>
 		<button type="button" th:onclick="'deleteBoard(' + ${detailBoard.no} + ');'">삭제</button>
 		<button type="button" th:onclick="location.href='/board/boardlist'">목록</button>
-      
 	</form>
 	
 
@@ -89,7 +86,7 @@ function update(form) {
 		$.ajax({
 			type : "post",
 			enctype: 'multipart/form-data',
-			url : "updateboard",
+			url : "update",
 			data : updateBoard,
 			dataType : "text",
 			processData: false,
@@ -101,7 +98,11 @@ function update(form) {
 				if(updateBoard.status > 0) {
 					
 					alert('글 수정 성공');
-	 				window.location.href = "/board/detailboard?no=" + updateBoard.boardNo;
+	 				window.location.href = "/board/detail?no=" + updateBoard.boardNo;
+				} else {
+					
+					// 게시글 작성자가 아닌 경우
+					alert(updateBoard.error);
 				}
 				
 			},
@@ -126,7 +127,7 @@ function deleteBoard(no) {
 		
 		$.ajax({
 			type : "post",
-			url : "deleteboard",
+			url : "delete",
 			data : deleteBoard,
 			dataType : "text",
 			success : function(data) {
@@ -137,12 +138,16 @@ function deleteBoard(no) {
 					
 					alert('글 삭제 성공');
 	 				window.location.href = "/board/boardlist";
+				} else {
+					
+					// 게시글 작성자가 아닌 경우
+					alert(deleteBoard.error);
 				}
 				
 			},
-			 error: function(xhr) {
-				 alert('게시글 작성자가 아닙니다');
-				  }
+			error: function(xhr) {
+				alert("서버 에러 발생");
+			}
 		}); // ajax
 		
 	} else {
@@ -150,7 +155,11 @@ function deleteBoard(no) {
 	}
 	
  }
- 
- 
+
+
+// 	let error = /*[[${error}]]*/null;
+// 	if (error != null) {
+// 		alert(error);
+// 	}
 </script>
 </html>

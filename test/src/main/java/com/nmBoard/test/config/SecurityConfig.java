@@ -11,15 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import com.nmBoard.test.service.UserService;
+import com.nmBoard.test.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity //웹보안 활성화를위한 annotation
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private UserService userService;
+  private UserServiceImpl userService;
 
-  public SecurityConfig(UserService userService) {
+  public SecurityConfig(UserServiceImpl userService) {
 	  this.userService = userService;
 }
 
@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   // DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다
   @Bean
-  public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+  public DaoAuthenticationProvider authenticationProvider(UserServiceImpl userService) {
 	  
     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
     authenticationProvider.setUserDetailsService(userService);
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     .invalidateHttpSession(true) // 로그아웃 이후 세션 전체 삭제 여부
     .deleteCookies("JSESSIONID");
 
-    http.csrf().disable();
+//    http.csrf().disable();
 
   }
 

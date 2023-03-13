@@ -8,7 +8,7 @@ import com.nmBoard.test.vo.Criteria;
 
 public interface BoardService {
 
-  void insertBoard(Board board) throws Exception;
+  void writeBoard(Board board) throws Exception;
 
   // 전체 게시글 + 페이징
   List<Board> getPageList(Criteria cri);

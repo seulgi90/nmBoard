@@ -14,45 +14,45 @@
 			USER.NAME,
 			ROLE.ROLENAME
 		from
-		  USER
+			USER
 		join USERROLE on USER.USERNO = USERROLE.USERNO
 		join ROLE on ROLE.ROLENO = USERROLE.ROLENO
 		where
-		  USER.ID = #{id}
+			USER.ID = #{id}
 	</select>
 
 	<!-- 회원가입 -->
 	<insert id="userSave" parameterType="user"
 		useGeneratedKeys="true" keyColumn="USERNO" keyProperty="userNo">
 		insert into USER
-		  (ID, PASSWORD, NAME, ROLENAME)
+			(ID, PASSWORD, NAME, ROLENAME)
 		values
-		  (#{id}, #{password}, #{name}, #{roleName});
+			(#{id}, #{password}, #{name}, #{roleName});
 	</insert>
 
 	<insert id="userRoleSave">
 		insert into USERROLE
-		  (USERNO, ROLENO)
+			(USERNO, ROLENO)
 		values
-		  (#{userNo}, #{roleNo})
+			(#{userNo}, #{roleNo})
 	</insert>
 
 	<select id="findUserNo" resultType="int">
 		select
-		  USERNO
+			USERNO
 		from
-	    USER
+			USER
 		where
-		  ID = #{id}
+			ID = #{id}
 	</select>
 
 	<select id="findRoleNo" resultType="int">
 		select
-		  ROLENO
+			ROLENO
 		from
-		  ROLE
+			ROLE
 		where
-		  ROLENAME = #{roleName}
+			ROLENAME = #{roleName}
 	</select>
 
 </mapper>

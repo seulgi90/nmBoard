@@ -14,7 +14,7 @@ table, th, td {
 
 <body>
 
-	<form id="insertForm" enctype="multipart/form-data">
+	<form id="registerForm" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>제목</th>
@@ -28,12 +28,13 @@ table, th, td {
 				<th>작성자</th>
 				<td><span sec:authentication="name"></td>
 			</tr>
-			 <tr>
-          <th>첨부파일</th><td><input name='files' type="file" multiple></td>
-       </tr>
+			<tr>
+				<th>첨부파일</th>
+				<td><input name='files' type="file" multiple></td>
+			</tr>
 
 		</table>
-		<input type="button" value="글쓰기" onclick="insertBoard()">
+		<input type="button" value="글쓰기" onclick="register()">
 		<input type="button" value="다시쓰기" onclick="reset()">
 		<a href="/board/boardlist"><input type="button" value="취소"></a>
 	</form>
@@ -43,9 +44,12 @@ table, th, td {
 
 
 <script>
-function insertBoard() {
+function register() {
 	
 	let result = confirm('글을 등록하시겠습니까?');
+	
+// 	먼저 사용하게 되면 들여쓰기 if문 불필요
+// 	if(!result) return;
 	
 	let titleCheck =  document.getElementById('title').value;
 	let contentCheck =  document.getElementById('content').value;
@@ -61,11 +65,11 @@ function insertBoard() {
 			return false;
 		}
 		
-		let insertBoard = document.getElementById("insertForm");
+		let writeBoard = document.getElementById("registerForm");
 		
-		insertBoard.action ="insertboard";
-		insertBoard.method = "post";
-		insertBoard.submit();
+		writeBoard.action = "board";
+		writeBoard.method = "post";
+		writeBoard.submit();
 		
 		alert('글 등록 성공');
 	}

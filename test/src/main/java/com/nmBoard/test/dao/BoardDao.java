@@ -10,7 +10,7 @@ import com.nmBoard.test.vo.Criteria;
 @Mapper
 public interface BoardDao {
 
-  int insertBoard(Board board);
+  int writeBoard(Board board);
 
   List<Board> getPageList(Criteria cri);
 
