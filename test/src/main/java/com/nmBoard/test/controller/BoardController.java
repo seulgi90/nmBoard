@@ -99,16 +99,16 @@ public class BoardController {
 			map.put("status", result);
 			map.put("boardNo", board.getNo());
 
+			return map;
 		} else {
-			map.put("error", "게시글 작성자가 아닙니다");
+			throw new Exception("게시글 작성자가 아닙니다");
 		}
-		
-		return map;
 	}
 
 	@PostMapping("/delete")
 	@ResponseBody
-	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no) throws Exception {
+	public Map<String, Object> deleteBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, int no)
+			throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -118,15 +118,15 @@ public class BoardController {
 
 			map.put("status", result);
 
+			return map;
 		} else {
-			map.put("error", "게시글 작성자가 아닙니다");
+			throw new Exception("게시글 작성자가 아닙니다");
 		}
-		
-		return map;
 	}
 
 	@GetMapping("/attachedfile/delete")
-	public String deleteFile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("no") int no, Model model) throws Exception {
+	public String deleteFile(@RequestParam("no") int no, @AuthenticationPrincipal UserPrincipal userPrincipal)
+			throws Exception {
 		// @RequestParam("no") 값을 받아서 int no로 받는다
 
 		// 첨부 파일 정보 가져오기
@@ -138,11 +138,11 @@ public class BoardController {
 
 			// 첨부파일을 삭제
 			if (boardService.deleteAttachedFile(no) == 0) {
-				 model.addAttribute("error", "게시글 첨부파일 삭제 할 수 없습니다");
+				throw new Exception("게시글 첨부파일 삭제 할 수 없습니다");
 			}
 
 		} else {
-			 model.addAttribute("error", "게시글 첨부파일 삭제 할 수 없습니다");
+			throw new Exception("게시글 작성자가 아닙니다");
 		}
 
 		return "redirect:detail?no=" + board.getNo();
