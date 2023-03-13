@@ -114,20 +114,24 @@ public class BoardController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if (boardService.getBoardNo(no).getWriter().getUserNo() == userPrincipal.getUserNo()) {
-
+		if (userPrincipal.getUserNo() == boardService.getBoardNo(no).getUserNo()) {
+			System.out.println("userPrincipal.getUserNo()-->" + userPrincipal.getUserNo());
+			System.out.println("boardService.getBoardNo(no).getUserNo()-->" + boardService.getBoardNo(no).getUserNo());
 			int result = boardService.deleteBoard(no);
 
 			map.put("status", result);
 
 			return map;
 		} else {
-			throw new Exception();
+			// 사용자 불일치시 null뜸 ->  500 에러 발생 
+			// 403 권한 없을을 뜨게 하고싶은데 어떻게?
+			throw new Exception(); 
+			
 		}
 	}
 
-	@GetMapping("/attachedfile/delete")
-	public String deleteFile(@RequestParam("no") int no, @AuthenticationPrincipal UserPrincipal userPrincipal)
+	@GetMapping("/filedelete")
+	public String deleteFile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("no") int no)
 			throws Exception {
 		// @RequestParam("no") 값을 받아서 int no로 받는다
 
@@ -136,7 +140,7 @@ public class BoardController {
 		// 해당 첨부 파일이 있는 게시글 가져오기
 		Board board = boardService.getBoardNo(attachedFile.getBoardNo());
 
-		if (board.getUserNo() == userPrincipal.getUserNo()) {
+		if (userPrincipal.getUserNo() == board.getUserNo()) {
 
 			// 첨부파일을 삭제
 			if (boardService.deleteAttachedFile(no) == 0) {

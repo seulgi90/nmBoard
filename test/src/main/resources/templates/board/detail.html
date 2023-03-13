@@ -36,7 +36,7 @@
 					<ul>
 						<li th:each="file : ${detailBoard.attachedFiles}">
 							<a th:href="@{/board/files/{path}(path=${file.filepath})}" th:text="${file.filepath}"></a>
-							[[<a th:href="@{attachedfile/delete(no=${file.attachedFileNo})}">파일삭제</a>]]
+							[[<a th:href="@{filedelete(no=${file.attachedFileNo})}">파일삭제</a>]]
 						</li>
 					</ul>
 					[파일 추가]: <input name='files' type="file" multiple>
@@ -99,16 +99,21 @@ function update(form) {
 					
 					alert('글 수정 성공');
 	 				window.location.href = "/board/detail?no=" + updateBoard.boardNo;
-				} else {
-					
-					// 게시글 작성자가 아닌 경우
-					alert(updateBoard.error);
-				}
+				} 
 				
 			},
 			error: function(xhr) {
-			    alert('게시글 작성자가 아닙니다');
-			  }
+				
+				if (xhr.status === 401) {
+					alert("인증된 사용자가 아닙니다");
+				} else if (xhr.status === 403) {
+					alert("접근 권한이 없습니다");
+				} else if (xhr.status === 404) {
+					alert("요청한 페이지를 찾을 수 없습니다");
+				} else {
+					alert("서버 에러 발생");
+				}
+			}
 		}); // ajax
 		
 	} else {

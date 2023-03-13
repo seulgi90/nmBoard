@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     .invalidateHttpSession(true) // 로그아웃 이후 세션 전체 삭제 여부
     .deleteCookies("JSESSIONID");
 
-//    http.csrf().disable();
+    http.csrf().disable();
 
   }
 
