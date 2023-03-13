@@ -17,17 +17,19 @@ public class LoginController {
     return "index";
   }
 
-  @GetMapping("/login")
-  public String loadExceptionPage(ModelMap model) throws Exception{
-
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
-
-    model.addAttribute("name",userPrincipal.getUsername());
-    model.addAttribute("auth",userPrincipal.getAuthorities());
-
-    return "login";
-  }
+//  @GetMapping("/login")
+//  public String loadExceptionPage(ModelMap model) throws Exception{
+//
+//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//    UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+//
+//    model.addAttribute("name",userPrincipal.getUsername());
+//    model.addAttribute("auth",userPrincipal.getAuthorities());
+//    
+//    System.out.println("userPrincipal.getUsername()" + userPrincipal.getUsername());
+//    
+//    return "login";
+//  }
 
 
   @GetMapping("/user/loginSuccess")

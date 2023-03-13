@@ -15,9 +15,12 @@ import com.nmBoard.test.vo.Pagination;
 @Service
 public class BoardServiceImpl implements BoardService {
 
-	@Autowired
-	BoardDao boardDao;
+	private BoardDao boardDao;
 
+	public BoardServiceImpl(BoardDao boardDao) {
+		this.boardDao = boardDao;
+	}
+	
 	@Transactional
 	@Override
 	public void insertBoard(Board board) throws Exception {

@@ -17,9 +17,11 @@ import com.nmBoard.test.service.UserService;
 @EnableWebSecurity //웹보안 활성화를위한 annotation
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
   private UserService userService;
 
+  public SecurityConfig(UserService userService) {
+	  this.userService = userService;
+}
 
   // 비밀번호 암호화
   @Bean
@@ -30,9 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // DaoAuthenticationProvider는 내부적으로 UserDetailsService를 이용해 사용자 정보를 읽는다
   @Bean
   public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+	  
     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
     authenticationProvider.setUserDetailsService(userService);
     authenticationProvider.setPasswordEncoder(passwordEncoder());
+    
     return authenticationProvider;
   }
 
@@ -50,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
     .antMatchers("/user/save").permitAll()
     .antMatchers("/").hasAnyAuthority("ROLE_ADMIN","ROLE_USER") // hasAnyAuthority: 사용자가 주어진 권한 중 어떤 것이라도 있으면 접근 허용
-    .anyRequest().permitAll()
+    .anyRequest().permitAll() // 모든 요청은 인증된 사용자만 접근 가능
 
     .and()
     .formLogin() // Form 기반의 로그인인 경우

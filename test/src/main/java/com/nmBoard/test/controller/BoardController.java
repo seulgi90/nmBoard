@@ -33,12 +33,15 @@ import com.nmBoard.test.vo.UserPrincipal;
 @RequestMapping("/board")
 public class BoardController {
 
-	@Autowired
-	BoardService boardService;
+	private BoardService boardService;
 
-	@Autowired
-	ServletContext sc;
-
+	private ServletContext sc;
+	
+	public BoardController(BoardService boardService, ServletContext sc) {
+		this.boardService = boardService;
+		this.sc = sc;
+	}
+	
 	@GetMapping("/form")
 	public String form() {
 
@@ -179,7 +182,8 @@ public class BoardController {
 
 			String filename = UUID.randomUUID().toString();
 
-			// FileItem 객체가 가르키는 임시 폴더에 저장된 파일을
+			// FileItem 객체가 가르키는 임시 폴더에 저장된 파일을 
+			// transferTo() 메서드를 사용하여 지정된 경로로 이동 :transferTo() 메서드는  IOException을 던질 수 있으므로 예외 처리 필요
 			part.transferTo(new File(dirPath + "/" + filename));
 
 			attachedFiles.add(new AttachedFile(filename));

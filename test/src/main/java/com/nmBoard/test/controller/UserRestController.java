@@ -10,10 +10,12 @@ import com.nmBoard.test.vo.User;
 @Controller
 public class UserRestController {
 
-
-  @Autowired
   private UserService userService;
-
+  
+  public UserRestController(UserService userService) {
+	  this.userService = userService;
+}
+  
   // 회원가입 폼
   @GetMapping("/user/joinform")
   public String joinForm() {

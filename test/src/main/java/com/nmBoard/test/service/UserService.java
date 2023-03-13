@@ -18,8 +18,11 @@ import com.nmBoard.test.vo.UserPrincipal;
 @Service
 public class UserService implements UserDetailsService {
 
-	@Autowired
 	private UserDao userDao;
+	
+	public UserService(UserDao userDao) {
+		this.userDao = userDao;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -30,7 +33,7 @@ public class UserService implements UserDetailsService {
 		if (userAuthes.size() == 0) {
 			throw new UsernameNotFoundException("User " + id + " Not Found!");
 		}
-
+		
 		// UserDetails 클래스를 상속받은 UserPrincipal 리턴
 		return new UserPrincipal(userAuthes);
 	}

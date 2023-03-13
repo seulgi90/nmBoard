@@ -26,11 +26,11 @@ public class UserPrincipal implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
 
     List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
+    
     for(int x=0; x < user.size(); x++) {
       authorities.add(new SimpleGrantedAuthority(user.get(x).getRoleName()));
     }
-
+    
     return authorities;
   }
 
@@ -49,8 +49,6 @@ public class UserPrincipal implements UserDetails {
   public int getUserNo() {
     return user.get(0).getUserNo();
   }
-
-
 
   // 유저 아이디가 만료되었는지
   @Override
