@@ -26,11 +26,11 @@ public class UserPrincipal implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
 
     List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-    
+
     for(int x=0; x < user.size(); x++) {
       authorities.add(new SimpleGrantedAuthority(user.get(x).getRoleName()));
     }
-    
+
     return authorities;
   }
 
